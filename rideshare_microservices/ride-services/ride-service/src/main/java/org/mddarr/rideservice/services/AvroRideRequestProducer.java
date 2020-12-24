@@ -3,6 +3,7 @@ package org.mddarr.rideservice.services;
 import org.mddarr.rides.event.dto.AvroRideRequest;
 import org.mddarr.rideservice.Constants;
 
+import org.mddarr.rideservice.interfaces.AvroRideRequestInterface;
 import org.mddarr.rideservice.models.requests.PostRideRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AvroRideRequestProducer implements AvroRideRequestInterface{
+public class AvroRideRequestProducer implements AvroRideRequestInterface {
 
     @Autowired
     private KafkaTemplate<String, AvroRideRequest> kafkaTemplateEvent1;
