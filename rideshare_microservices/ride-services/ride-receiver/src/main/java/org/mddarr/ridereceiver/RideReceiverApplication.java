@@ -29,41 +29,14 @@ public class RideReceiverApplication {
 	public static final int WINDOW_SIZE_MS = 30_000;
 
 
-//	@Bean
-//	public java.util.function.Consumer<KStream<String, String>> process() {
-//
-//		return input ->
-//				input.foreach((key, value) -> {
-//					System.out.println("Key: " + key + " Value: " + value);
-//				});
-//	}
 	@Bean
 	public Function<KStream<String, AvroRideRequest>, KStream<String, AvroRideRequest>>  process() {
 		return (rideRequestStream) -> {
 			rideRequestStream.foreach((key, value) -> System.out.println("THE KEY IS AND THE VLAUE IS " + key + " " + value));
 			return rideRequestStream;
 
-//			return 	userClicksStream.flatMapValues(value -> Arrays.asList(value.toLowerCase().split("\\W+")))
-//					.map((key, value) -> new KeyValue<>(value, value))
-//					.groupByKey(Grouped.with(Serdes.String(), Serdes.String()))
-//					.windowedBy(TimeWindows.of(Duration.ofMillis(WINDOW_SIZE_MS)))
-//					.count(Materialized.as("WordCounts-1"))
-//					.toStream()
-//					.map((key, value) -> new KeyValue<>(null, new AvroRideRequest("Charles", 3)));
 		};
 	}
 
-//	@Bean
-//	public Function<KStream<Bytes, String>, KStream<Bytes, WordCount>> process() {
-//
-//		return incoming_words -> incoming_words
-//				.flatMapValues(value -> Arrays.asList(value.toLowerCase().split("\\W+")))
-//				.map((key, value) -> new KeyValue<>(value, value))
-//				.groupByKey(Grouped.with(Serdes.String(), Serdes.String()))
-//				.windowedBy(TimeWindows.of(Duration.ofMillis(WINDOW_SIZE_MS)))
-//				.count(Materialized.as("WordCounts-1"))
-//				.toStream()
-//				.map((key, value) -> new KeyValue<>(null, new WordCount(key.key(), value, new Date(key.window().start()), new Date(key.window().end()))));
-//	}
 
 }

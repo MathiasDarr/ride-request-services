@@ -1,7 +1,0 @@
-spring:
-  cloud:
-    stream:
-      bindings:
-        supplier-out-0:
-          destination: person-command
-server.port: 9997

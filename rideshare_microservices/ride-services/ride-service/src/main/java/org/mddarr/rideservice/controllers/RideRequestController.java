@@ -2,7 +2,7 @@ package org.mddarr.rideservice.controllers;
 
 
 
-import org.mddarr.rideservice.models.RideRequest;
+import org.mddarr.rideservice.models.requests.PostRideRequest;
 import org.mddarr.rideservice.services.AvroRideRequestProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,7 +16,7 @@ public class RideRequestController {
     AvroRideRequestProducer avroRideRequestProducer;
 
     @PutMapping
-    public String postRideRequest(@RequestBody RideRequest rideRequest){
+    public String postRideRequest(@RequestBody PostRideRequest rideRequest){
         avroRideRequestProducer.sendRideRequest(rideRequest);
         return "dfd";
     }
