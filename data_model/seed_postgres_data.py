@@ -74,8 +74,6 @@ def populate_drivers_table():
     conn.commit()
 
 
-
-
 if __name__ =='__main__':
     conn = psycopg2.connect(host="localhost", port="5432", user="postgres", password="postgres", database="postgresdb")
     cur = conn.cursor()

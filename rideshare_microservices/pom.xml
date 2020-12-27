@@ -19,8 +19,9 @@
 		<java.version>11</java.version>
 	</properties>
 	<modules>
-		<module>ride-services</module>
-		<module>driver-service</module>
+		<module>transaction-kafka-samples/function-composition</module>
+<!--		<module>ride-services</module>-->
+<!--		<module>driver-service</module>-->
 <!--		<module>ride-request-services</module>-->
 <!--		<module>kafka-producer</module>-->
 <!--		<module>authorization-services</module>-->
