@@ -1,3 +1,10 @@
+## RideShare Microservices ##
+
+This directory contains the Microservices developed using Spring Boot, Kafka Streams, with Cassandra & Postgres used for data persistence 
+
+
+
+
 In this directory I experiment w/ Kafka
 
 {"namespace": "org.mddarr.riderequests",
