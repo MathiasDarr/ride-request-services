@@ -74,11 +74,38 @@ def populate_drivers_table():
     conn.commit()
 
 
+
+def populate_rides_table():
+    create_rides_table = """
+            CREATE TABLE rides (
+                    rideid VARCHAR(50) PRIMARY KEY,
+                    userid VARCHAR(50),
+                    driverid VARCHAR(50),
+                    ride_time timestamp,
+                    riders INTEGER,
+                    ride_status VARCHAR(30)
+            );
+    """
+    cur.execute(create_rides_table)
+    conn.commit()
+    DRIVERS_CSV_FILE = 'data/rides/rides.csv'
+    insert_into_drivers_table = """INSERT INTO rides(rideid, userid, driverid,ride_time, riders, ride_status) VALUES(%s,%s,%s,%s,%s, %s);"""
+
+    with open(DRIVERS_CSV_FILE, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            cur.execute(insert_into_drivers_table, [row['rideid'], row['userid'], row["driverid"], row['ride_time'], row['riders'], row['ride_status']])
+    conn.commit()
+
+
 if __name__ =='__main__':
     conn = psycopg2.connect(host="localhost", port="5432", user="postgres", password="postgres", database="postgresdb")
     cur = conn.cursor()
-    populate_ride_requests_table()
-    populate_drivers_table()
-    #populate_users_table()
+    # populate_ride_requests_table()
+    # populate_drivers_table()
+    #
+    # populate_users_table()
 
     print("THE POSTGRES DATABASE HAS BEEN SEEDED.")
+
+    populate_rides_table()

@@ -3,6 +3,8 @@ findspark.init()
 import pyspark as ps
 from pyspark import SparkContext, SparkConf
 from pyspark.sql.avro.functions import from_avro, to_avro
+from pyspark.sql.functions import col, struct
+
 
 
 def getSparkInstance():
@@ -20,26 +22,54 @@ def getSparkInstance():
 
 spark = getSparkInstance()
 
-streamingDF = spark \
-  .readStream \
-  .format("kafka") \
-  .option("kafka.bootstrap.servers", "localhost:9092") \
-  .option("subscribe", "topic1") \
-  .load()
-
-jsonFormatSchema = open("schema/ride_request.avsc", "r").read()
 
 def process_row(row):
     print("THE ROW LOOKS LIKE " + str(row))
-    # print("THE ROW VALUE IS " + str(row.value.decode('utf-8')))
-    #
-    # print("THE ROW VALUE IS " + str(type(row.value.decode('utf-8'))))
 
-output = streamingDF \
-    .select(from_avro("key", jsonFormatSchema).alias("requests")) \
-    .writeStream \
-    .foreach(lambda x: process_row(x)) \
-    .start()
+
+# jsonFormatSchema = open("schema/ride_request.avsc", "r").read()
+
+
+
+avro_type_struct = """
+{
+  "type": "record",
+  "name": "struct",
+  "fields": [
+    {"name": "user_id", "type": "string"},
+    {"name": "riders", "type": "integer"}
+  ]
+}"""
+
+
+df = spark.range(10).select(struct(
+    col("id"),
+    col("id").cast("string").alias("id2")
+).alias("struct"))
+avro_struct_df = df.select(to_avro(col("struct")).alias("avro"))
+avro_struct_df.show(3)
+
+
+
+# streamingDF = spark \
+#   .readStream \
+#   .format("kafka") \
+#   .option("kafka.bootstrap.servers", "localhost:9092") \
+#   .option("subscribe", "ride-requests") \
+#   .load() \
+#   .select(from_avro("key", jsonFormatSchema).alias("requests"))
+#
+# streamingDF \
+#     .writeStream \
+#     .foreach(lambda x: process_row(x)) \
+#     .start()
+#
+# spark.streams.awaitAnyTermination()
+
+# output = streamingDF \
+#     .select(from_avro("key", jsonFormatSchema).alias("requests")) \
+#     .writeStream \
+
     # .select(to_avro("requests", jsonFormatSchema))\
 
 
@@ -55,10 +85,6 @@ output = streamingDF \
 #   .option("kafka.bootstrap.servers", "localhost:9092") \
 #   .option("topic", "processed-requests") \
 #   .start()
-
-
-
-spark.streams.awaitAnyTermination()
 
 
 
