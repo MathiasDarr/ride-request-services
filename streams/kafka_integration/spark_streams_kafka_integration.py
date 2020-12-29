@@ -19,11 +19,23 @@ def getSparkInstance():
 
 spark = getSparkInstance()
 
-df = spark \
+streamingDF = spark \
   .readStream \
   .format("kafka") \
-  .option("kafka.bootstrap.servers", "host1:localhost:9092") \
+  .option("kafka.bootstrap.servers", "localhost:9092") \
   .option("subscribe", "topic1") \
   .load()
-df.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)")
 
+def process_row(row):
+    print("THE ROW LOOKS LIKE " + str(row))
+    print("THE ROW VALUE IS " + str(row.value.decode('utf-8')))
+
+    print("THE ROW VALUE IS " + str(type(row.value.decode('utf-8'))))
+query = streamingDF.writeStream.foreach(lambda x: process_row(x)).start()
+
+# topic1_stream.writeStream \
+#     .foreach(s) \
+#     # .format("console") \
+#     .start()
+
+spark.streams.awaitAnyTermination()
