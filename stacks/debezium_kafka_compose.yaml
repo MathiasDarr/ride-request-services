@@ -9,20 +9,6 @@ services:
 #      MYSQL_DATABASE: sample_mysql_db
 #    volumes:
 #      - data-volume:/var/lib/mysql
-  cassandra:
-    container_name: cassandra
-    image: 'bitnami/cassandra:3'
-    ports:
-      - '7000:7000'
-      - '9042:9042'
-
-    environment:
-      - CASSANDRA_SEEDS=cassandra
-      - CASSANDRA_PASSWORD_SEEDER=yes
-      - CASSANDRA_PASSWORD=cassandra
-      - CASSANDRA_TRANSPORT_PORT_NUMBER=7000
-    volumes:
-      -  'cassandra_data:/bitnami'
 
 
   postgres:
@@ -108,6 +94,3 @@ services:
 volumes:
   postgres_data:
   data-volume: {}
-
-  cassandra_data:
-    driver: local

@@ -1,5 +1,5 @@
 """
-Create & populate patients, providers tables
+Create & populate users, drivers, ride requests & rides relation data model
 """
 # !/usr/bin/env python3
 import psycopg2
@@ -72,7 +72,6 @@ def populate_drivers_table():
         for row in reader:
             cur.execute(insert_into_drivers_table, [row['driver_id'], row['first_name'], row["last_name"], row['email'], row['password']])
     conn.commit()
-
 
 
 def populate_rides_table():

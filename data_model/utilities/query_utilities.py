@@ -6,8 +6,6 @@ import uuid
 for x in range(4):
     print(uuid.uuid4())
 
-
-
 def execute_query(query, session):
     """
     This function will try to execute the query passed by function parameter, or
@@ -19,7 +17,4 @@ def execute_query(query, session):
         session.execute(query)
     except Exception as e:
         print(e)
-
-
-
 
