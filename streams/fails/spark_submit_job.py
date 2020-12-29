@@ -21,20 +21,17 @@ def getSparkInstance():
     return spark
 
 spark = getSparkInstance()
-
-
-
-# Subscribe to 1 topic
-df = spark \
-  .readStream \
-  .format("kafka") \
-  .option("kafka.bootstrap.servers", "host1:port1,host2:port2") \
-  .option("subscribe", "uppercaseecho-out-0") \
-  .load()
-df.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)")
+#
+# # Subscribe to 1 topic
+# df = spark \
+#   .readStream \
+#   .format("kafka") \
+#   .option("kafka.bootstrap.servers", "localhost:9092") \
+#   .option("subscribe", "uppercaseecho-out-0") \
+#   .load()
+# df.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)")
 
 if (__name__ == "__main__"):
-    sc = SparkContext(appName="PythonSparkStreamingKafka_RM_01")
+    sc = SparkContext(appName="Kafka Spark Demo")
     sc.setLogLevel("WARN")
     ssc = StreamingContext(sc, 60)
-

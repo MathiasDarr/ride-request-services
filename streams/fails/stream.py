@@ -1,9 +1,11 @@
 import findspark
 findspark.init()
 import pyspark as ps
+from pyspark import SparkContext, SparkConf
+from pyspark.streaming import StreamingContext
+
 import os
-
-
+import json
 
 def getSparkInstance():
     """
@@ -17,6 +19,5 @@ def getSparkInstance():
         .appName("individual") \
         .getOrCreate()
     return spark
-
 
 spark = getSparkInstance()
