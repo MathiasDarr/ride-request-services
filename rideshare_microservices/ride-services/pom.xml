@@ -17,8 +17,8 @@
     <version>1.0-SNAPSHOT</version>
     
     <modules>
-<!--        <module>event-producer</module>-->
-        <module>ride-receiver</module>
+        <module>event-producer</module>
+        <module>dispatch-service</module>
 <!--        <module>drivers-service</module>-->
         <!--        <module>ride-request-service</module>-->
 <!--        <module>ride-coordinate-service</module>-->

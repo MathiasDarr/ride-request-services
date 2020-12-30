@@ -16,8 +16,8 @@ import java.util.*;
 public class EventProducer {
 
     public static void main(String[] args) throws Exception {
-//        EventProducer.populateDrivers();
-        EventProducer.populateRideRequests();
+        EventProducer.populateDrivers();
+//        EventProducer.populateRideRequests();
     }
 
     public static void populateRideRequests() throws Exception{

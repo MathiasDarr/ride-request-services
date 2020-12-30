@@ -5,6 +5,7 @@ import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
 import org.mddarr.ridereceiver.models.WordCount;
+import org.mddarr.rides.event.dto.AvroDriver;
 import org.mddarr.rides.event.dto.AvroRideRequest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,6 +38,16 @@ public class RideReceiverApplication {
 
 		};
 	}
+
+	@Bean
+	public Function<KStream<String, AvroDriver>, KStream<String, AvroDriver>>  process_drivers() {
+		return (avroDriverKStream) -> {
+			avroDriverKStream.foreach((key, value) -> System.out.println("THE KEY IS AND THE VLAUE IS " + key + " " + value));
+			return avroDriverKStream;
+
+		};
+	}
+
 
 
 }
