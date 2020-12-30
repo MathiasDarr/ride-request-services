@@ -40,6 +40,6 @@ public class DriversController {
 
     @PutMapping(value="drivers/active")
     public void activateDriver(){
-        avroDriverProducer.postDriver();
+        avroDriverProducer.postKafkaDriver();
     }
 }
