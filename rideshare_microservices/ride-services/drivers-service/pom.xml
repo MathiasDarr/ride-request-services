@@ -22,6 +22,13 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>org.mddarr</groupId>
+			<artifactId>rides-avro-schema</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
 		<!-- SPRING JPA DEPENDENCIES        -->
 
 		<dependency>
@@ -53,6 +60,16 @@
 
 
 		<!-- KAFKA, CONFLUENT & AVRO DEPENDENCIES		-->
+
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro-compiler</artifactId>
+			<version>1.8.2</version>
+		</dependency>
+
+
+
+
 
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>

@@ -3,7 +3,9 @@ package org.mddarr.driversservice.controllers;
 
 import org.mddarr.driversservice.models.Driver;
 import org.mddarr.driversservice.models.requests.PostDriverRequest;
+import org.mddarr.driversservice.services.AvroDriverProducer;
 import org.mddarr.driversservice.services.DriverService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +13,9 @@ import java.util.Optional;
 
 @RestController
 public class DriversController {
+
+    @Autowired
+    private AvroDriverProducer avroDriverProducer;
 
     private final DriverService driverService;
 
@@ -31,5 +36,10 @@ public class DriversController {
     @PutMapping(value="drivers")
     public String createPatient(@RequestBody PostDriverRequest postDriverRequest){
         return driverService.postDriver(postDriverRequest);
+    }
+
+    @PutMapping(value="drivers/active")
+    public void activateDriver(){
+        avroDriverProducer.postDriver();
     }
 }
