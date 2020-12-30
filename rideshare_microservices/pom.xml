@@ -20,7 +20,8 @@
 	</properties>
 	<modules>
 		<module>ride-services</module>
-<!--		<module>driver-service</module>-->
+
+		<!--		<module>driver-service</module>-->
 <!--		<module>transaction-kafka-samples/function-composition</module>-->
 
 <!--		<module>driver-service</module>-->
