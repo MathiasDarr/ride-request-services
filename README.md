@@ -8,40 +8,34 @@ This repository contains microservices implemented using Spring, frontend develo
 ## This repository contains ##
 
 * Spring MicroServices
-    * authenication_service
-        * Spring application leveraging Spring security 
-        * Return & Validate JWTs to autheticated users
-        
-    * rideservice,
-        * Spring Boot application exposes endpoints to allow authenticated users to request rides
-        * Ride requests are inserted into Cassandra database, and and added to
-        * Unit & Integration test suite 
-    * relationalrideservice,
-        * Same service as described above but instead uses a postgres backend 
-        
-    * driver-dispatch-service 
-        * Spring service consumes rabbitmq messages 
-        * Assigns driver in driver pool to ride and saves a Ride object to cassandra
-    * locationtracker 
-        * Spring boot service connects with clients with WebSockets and STOMP protocol 
-        * Write time series location data received over socket to Cassandra w/ ride ID that was generated from the driver-dispatch-service
-        
-* Vue JS front end
-    * Technologies Used
-        * Vuex state store
-        * sockjs-client for socket communication
-        * webstomp-client Stomp client
-    * communicates with the locationtracker service w/ 
+
+* Ride Request Service
+    * exposes REST endpoint for authenticated users to request ride
+    * Uses kafka producer API to post ride request message to kafka
+* Ride Coordinate Service
+    * communicates with clients via web sockets 
+    * receives timestamps & coordinates from client, producing to kafka with avro serializaiton
+* Dispatch Service
+    * stream processing service leveraging kafka cloud streams API with Kafka binder
+    * Reads from drivers topic & ride requests topic
+* Rides Query Service
+    * exposes REST endpoints for querying the rides
+
+
+## Vue JS front end ##
+  * Vuex state store
+  * sockjs-client for socket communication
+  * webstomp-client Stomp client
+  * communicates with the locationtracker service w/ 
 
 * Python data seeding scripts
     * interact with Cassandra using datastax cassandra-driver
     * interact with postgresql using psycopg2
     
-    
-    
+   
 ## Replication Steps  ##
 #### Seed database ####
-* Run cassandra, postgres & rabbitmq in docker
+* Run cassandra, postgres, kafka, zookeeper, schema registry & connect
     docker-compose up 
 * populate cassandra & postgres databases ()
     * cd data_model
@@ -49,6 +43,7 @@ This repository contains microservices implemented using Spring, frontend develo
         * pip install cassandra-driver
         * pip install psycopg2
     * python3 seed_cassandra_data.py
+
 
 #### Run microservices #####
 * cd microservices
@@ -61,10 +56,4 @@ This repository contains microservices implemented using Spring, frontend develo
     * java -jar driver-dispatch-service/target/driver-dispatch-service-0.0.1-SNAPSHOT.jar
 * run location tracker
    java -jar 
-
-
-
-//    "schema.whitelist": "snowpack",
-
-
 

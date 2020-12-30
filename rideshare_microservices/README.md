@@ -1,28 +1,19 @@
 ## RideShare Microservices ##
 
-This directory contains the Microservices developed using Spring Boot, Kafka Streams, with Cassandra & Postgres used for data persistence 
+This directory contains Microservices developed using Spring Boot, Kafka Streams, with Cassandra & Postgres used for data persistence 
+
+## Microservices ##
+* Ride Request Service
+    * exposes REST endpoint for authenticated users to request ride
+    * Uses kafka producer API to post ride request message to kafka
+* Ride Coordinate Service
+    * communicates with clients via web sockets 
+    * receives timestamps & coordinates from client, producing to kafka with avro serializaiton
+* Dispatch Service
+    * stream processing service leveraging kafka cloud streams API with Kafka binder
+    * Reads from drivers topic & ride requests topic
+* Rides Query Service
+    * exposes REST endpoints for querying the rides
 
 
-
-
-In this directory I experiment w/ Kafka
-
-{"namespace": "org.mddarr.riderequests",
- "type": "record",
- "name": "AvroRideRequest",
- "fields": [
-     {"name": "user_id", "type": "string"},
-     {"name": "request_time",   "type": "string"},
-     {"name": "location_lat",  "type": "double"},
-     {"name": "location_lng",  "type": "double"},
-     {"name": "destination_lat",  "type": "double"},
-     {"name": "destination_lng",  "type": "double"},
-     {"name": "status",  "type": "string"},     
-     {"name": "riders",  "type": "integer"},
- ]
-}
-
-
-docker exec -it kafka /kafka/bin/kafka-console-producer.sh --broker-list kafka:9092 --topic words
-
-docker exec -it kafka /kafka/bin/kafka-console-consumer.sh  --topic counts --bootstrap-server kafka:9092
+## Running the Services ##
