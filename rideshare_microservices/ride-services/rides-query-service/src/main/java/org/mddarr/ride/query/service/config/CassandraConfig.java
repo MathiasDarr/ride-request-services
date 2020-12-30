@@ -16,7 +16,7 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
 import org.springframework.util.Assert;
 
 @Configuration
-@EnableCassandraRepositories(basePackages = "org.mddarr.patientservice.repository")
+@EnableCassandraRepositories(basePackages = "org.mddarr.ride.query.service.repository")
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
     @Value("${cassandra.username}")

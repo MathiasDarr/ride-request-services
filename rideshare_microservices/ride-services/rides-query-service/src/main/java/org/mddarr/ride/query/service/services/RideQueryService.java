@@ -21,7 +21,7 @@ public class RideQueryService implements RideQueryServiceInterface {
 
     @Override
     public List<RideCoordinate> getRideCoordinates(String rideID) {
-        return null;
+        return rideCoordinatesRepository.getRideCoordinates(rideID);
     }
 
 
