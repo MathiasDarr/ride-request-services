@@ -16,12 +16,8 @@ import org.mddarr.rides.event.dto.Event3;
 public class CustomKafkaAvroDeserializer extends KafkaAvroDeserializer {
     @Override
     public Object deserialize(String topic, byte[] bytes) {
-        if (topic.equals(Constants.Rides_TOPIC)) {
+        if (topic.equals(Constants.COORDINATES_TOPIC)) {
             this.schemaRegistry = getMockClient(AvroRideRequest.SCHEMA$);
-        }
-
-        if (topic.equals(Constants.EVENT_3_TOPIC)) {
-            this.schemaRegistry = getMockClient(Event3.SCHEMA$);
         }
 
         return super.deserialize(topic, bytes);

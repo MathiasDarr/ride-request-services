@@ -1,14 +1,14 @@
-package org.mddarr.rideservice.event;
+package org.mddarr.rides.request.service.event;
 
-import org.mddarr.rideservice.Constants;
-import org.mddarr.rideservice.UatAbstractTest;
+import org.mddarr.rides.request.service.models.RideRequest;
+import org.mddarr.rides.request.service.Constants;
+import org.mddarr.rides.request.service.UatAbstractTest;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.Test;
 import org.mddarr.rides.event.dto.AvroRideRequest;
 
-import org.mddarr.rideservice.models.RideRequest;
-import org.mddarr.rideservice.services.AvroRideRequestProducer;
+import org.mddarr.rides.request.service.services.AvroRideRequestProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 
@@ -25,6 +25,4 @@ public class RideRequestProducerTest extends UatAbstractTest {
         ConsumerRecord<String, AvroRideRequest> singleRecord = KafkaTestUtils.getSingleRecord(event1Consumer, Constants.Rides_TOPIC);
         assertThat(singleRecord).isNotNull();
     }
-
-
 }

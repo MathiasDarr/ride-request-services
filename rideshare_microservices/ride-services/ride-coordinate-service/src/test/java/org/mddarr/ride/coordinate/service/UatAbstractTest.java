@@ -36,10 +36,7 @@ public abstract class UatAbstractTest {
     @Autowired
     private EmbeddedKafkaBroker kafkaEmbedded;
     protected Producer<String, Event3> event3Producer;
-    protected Consumer<String, Event3> event3Consumer;
-    protected Consumer<String, AvroRideRequest> event1Consumer;
-
-
+    protected Consumer<String, AvroRideRequest> avroRideRequestConsumer;
 
 
     @Before
@@ -56,23 +53,19 @@ public abstract class UatAbstractTest {
         configs.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
         configs.put("schema.registry.url", "not-used");
 
-        event3Consumer = new DefaultKafkaConsumerFactory<String, Event3>(configs).createConsumer("in-test-consumer", "10");
 
-        event1Consumer = new DefaultKafkaConsumerFactory<String, AvroRideRequest>(configs).createConsumer("in-test-consumer", "10");
+        avroRideRequestConsumer = new DefaultKafkaConsumerFactory<String, AvroRideRequest>(configs).createConsumer("in-test-consumer", "10");
 
         kafkaProperties.buildConsumerProperties();
-        event3Consumer.subscribe(Lists.newArrayList(Constants.EVENT_3_TOPIC));
 
-        event1Consumer.subscribe(Lists.newArrayList(Constants.Rides_TOPIC));
+        avroRideRequestConsumer.subscribe(Lists.newArrayList(Constants.COORDINATES_TOPIC));
 
     }
 
     @After
     public void reset() {
         //consumers needs to be closed because new one are created before every test
-        event3Consumer.close();
-
-        event1Consumer.close();
+        avroRideRequestConsumer.close();
 
     }
 

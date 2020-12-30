@@ -1,6 +1,6 @@
-package org.mddarr.rideservice.event;
+package org.mddarr.rides.request.service.event;
 
-import org.mddarr.rideservice.Constants;
+import org.mddarr.rides.request.service.Constants;
 
 import org.mddarr.rides.event.dto.Event3;
 

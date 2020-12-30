@@ -1,6 +1,6 @@
-package org.mddarr.rideservice.mock;
+package org.mddarr.rides.request.service.mock;
 
-import org.mddarr.rideservice.Constants;
+import org.mddarr.rides.request.service.Constants;
 
 import io.confluent.kafka.schemaregistry.client.MockSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;

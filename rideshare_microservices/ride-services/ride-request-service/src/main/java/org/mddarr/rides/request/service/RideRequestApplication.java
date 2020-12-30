@@ -1,4 +1,4 @@
-package org.mddarr.rideservice;
+package org.mddarr.rides.request.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,14 +9,13 @@ import org.springframework.context.annotation.ComponentScan;
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "org.mddarr.rideservice")
-public class ShowcaseApp {
+public class RideRequestApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ShowcaseApp.class, args);
+        SpringApplication.run(RideRequestApplication.class, args);
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(ShowcaseApp.class);
+    private static final Logger logger = LoggerFactory.getLogger(RideRequestApplication.class);
 
     @PostConstruct
     public void postInit() {

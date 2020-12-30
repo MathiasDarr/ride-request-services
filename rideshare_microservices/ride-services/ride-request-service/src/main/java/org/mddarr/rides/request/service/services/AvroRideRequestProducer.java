@@ -1,9 +1,9 @@
-package org.mddarr.rideservice.services;
+package org.mddarr.rides.request.service.services;
 
 import org.mddarr.rides.event.dto.AvroRideRequest;
-import org.mddarr.rideservice.Constants;
+import org.mddarr.rides.request.service.models.RideRequest;
+import org.mddarr.rides.request.service.Constants;
 
-import org.mddarr.rideservice.models.RideRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

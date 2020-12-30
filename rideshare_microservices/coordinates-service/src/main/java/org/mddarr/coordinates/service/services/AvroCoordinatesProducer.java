@@ -1,5 +1,6 @@
 package org.mddarr.coordinates.service.services;
 import org.joda.time.DateTime;
+import org.mddarr.coordinates.service.Constants;
 import org.mddarr.coordinates.service.interfaces.AvroCoordinatesInterface;
 import org.mddarr.coordinates.service.models.CoordinatesMessage;
 import org.mddarr.rides.event.dto.AvroRideCoordinate;
@@ -22,10 +23,11 @@ public class AvroCoordinatesProducer implements AvroCoordinatesInterface {
     private static final Logger logger = LoggerFactory.getLogger(AvroCoordinatesProducer.class);
 
     public void sendRideCoordinates(CoordinatesMessage coordinatesMessage) {
+        AvroRideCoordinate avroRideCoordinate = new AvroRideCoordinate("ride1", 12.1, 21.3);
         AvroRideCoordinate coordinate = AvroRideCoordinate.newBuilder().setRideid(coordinatesMessage.getRideid()).setLatitude(coordinatesMessage.getLatitude())
-                .setLongitude(coordinatesMessage.getLongitude()).setTime(DateTime.now()).build();
+                .setLongitude(coordinatesMessage.getLongitude()).build();
         logger.info("Send ride coordinate message {}", coordinate);
-        coordinateKafkaTemplate.send("ride-coordinates", coordinate);
+        coordinateKafkaTemplate.send(Constants.COORDINATES_TOPIC, coordinate);
     }
 
 }

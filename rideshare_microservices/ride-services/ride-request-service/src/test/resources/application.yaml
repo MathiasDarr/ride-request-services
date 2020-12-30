@@ -17,7 +17,7 @@ spring:
         schema:
           registry:
             url: not-used
-      value-deserializer: org.mddarr.rideservice.mock.CustomKafkaAvroDeserializer
+      value-deserializer: org.mddarr.rides.request.service.mock.CustomKafkaAvroDeserializer
     producer:
       auto:
         register:
@@ -28,7 +28,7 @@ spring:
         schema:
           registry:
             url: not-used
-      value-serializer: org.mddarr.rideservice.mock.CustomKafkaAvroSerializer
+      value-serializer: org.mddarr.rides.request.service.mock.CustomKafkaAvroSerializer
     properties:
       specific:
         avro:
