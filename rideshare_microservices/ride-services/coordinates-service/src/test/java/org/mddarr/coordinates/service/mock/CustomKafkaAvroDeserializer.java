@@ -1,11 +1,12 @@
 package org.mddarr.coordinates.service.mock;
 
-import org.mddarr.rideservice.Constants;
+
 
 import io.confluent.kafka.schemaregistry.client.MockSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.avro.Schema;
+import org.mddarr.coordinates.service.Constants;
 import org.mddarr.rides.event.dto.AvroRideRequest;
 import org.mddarr.rides.event.dto.Event3;
 
@@ -16,12 +17,8 @@ import org.mddarr.rides.event.dto.Event3;
 public class CustomKafkaAvroDeserializer extends KafkaAvroDeserializer {
     @Override
     public Object deserialize(String topic, byte[] bytes) {
-        if (topic.equals(Constants.Rides_TOPIC)) {
+        if (topic.equals(Constants.topic)) {
             this.schemaRegistry = getMockClient(AvroRideRequest.SCHEMA$);
-        }
-
-        if (topic.equals(Constants.EVENT_3_TOPIC)) {
-            this.schemaRegistry = getMockClient(Event3.SCHEMA$);
         }
 
         return super.deserialize(topic, bytes);

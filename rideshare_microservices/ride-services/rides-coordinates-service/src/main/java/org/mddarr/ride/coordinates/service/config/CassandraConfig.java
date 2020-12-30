@@ -1,4 +1,4 @@
-package org.mddarr.ride.query.service.config;
+package org.mddarr.ride.coordinates.service.config;
 
 
 
@@ -16,7 +16,7 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
 import org.springframework.util.Assert;
 
 @Configuration
-@EnableCassandraRepositories(basePackages = "org.mddarr.patientservice.repository")
+@EnableCassandraRepositories(basePackages = "org.mddarr.ride.coordinates.service.repository")
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
     @Value("${cassandra.username}")

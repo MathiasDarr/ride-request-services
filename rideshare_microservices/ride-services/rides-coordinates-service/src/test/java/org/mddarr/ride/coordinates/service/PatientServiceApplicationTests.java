@@ -1,7 +1,7 @@
-package org.mddarr.ride.query.service;
+package org.mddarr.ride.coordinates.service;
 
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mddarr.ride.query.service.config.CassandraConfig;
+import org.mddarr.ride.coordinates.service.config.CassandraConfig;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;

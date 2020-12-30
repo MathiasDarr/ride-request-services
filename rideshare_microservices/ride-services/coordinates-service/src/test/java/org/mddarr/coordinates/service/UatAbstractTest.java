@@ -1,7 +1,7 @@
 package org.mddarr.coordinates.service;
 
 
-import org.mddarr.rideservice.mock.CustomKafkaAvroDeserializer;
+
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mddarr.coordinates.service.mock.CustomKafkaAvroDeserializer;
 import org.mddarr.rides.event.dto.AvroRideRequest;
 import org.mddarr.rides.event.dto.Event3;
 
@@ -26,7 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.HashMap;
 import java.util.Map;
 
-@SpringBootTest(classes = {ShowcaseApp.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = {RidesCoordinatesApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @RunWith(SpringRunner.class)
 @Category(IntegrationTest.class)
 @EmbeddedKafka()
@@ -38,8 +39,6 @@ public abstract class UatAbstractTest {
     protected Producer<String, Event3> event3Producer;
     protected Consumer<String, Event3> event3Consumer;
     protected Consumer<String, AvroRideRequest> event1Consumer;
-
-
 
 
     @Before
@@ -57,23 +56,16 @@ public abstract class UatAbstractTest {
         configs.put("schema.registry.url", "not-used");
 
         event3Consumer = new DefaultKafkaConsumerFactory<String, Event3>(configs).createConsumer("in-test-consumer", "10");
-
         event1Consumer = new DefaultKafkaConsumerFactory<String, AvroRideRequest>(configs).createConsumer("in-test-consumer", "10");
-
         kafkaProperties.buildConsumerProperties();
-        event3Consumer.subscribe(Lists.newArrayList(Constants.EVENT_3_TOPIC));
-
-        event1Consumer.subscribe(Lists.newArrayList(Constants.Rides_TOPIC));
-
+        event1Consumer.subscribe(Lists.newArrayList(Constants.topic));
     }
 
     @After
     public void reset() {
         //consumers needs to be closed because new one are created before every test
         event3Consumer.close();
-
         event1Consumer.close();
-
     }
 
 }

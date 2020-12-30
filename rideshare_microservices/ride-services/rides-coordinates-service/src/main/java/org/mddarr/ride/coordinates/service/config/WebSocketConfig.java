@@ -1,4 +1,4 @@
-package org.mddarr.ride.query.service.config;
+package org.mddarr.ride.coordinates.service.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -19,7 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/location-tracker-websocket")
-				.setAllowedOrigins("http://localhost:8088")
+				.setAllowedOrigins("http://localhost:8091")
 				.withSockJS();
 
 //		registry.addEndpoint("/gs-guide-websocket")

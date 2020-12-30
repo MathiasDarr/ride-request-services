@@ -1,4 +1,4 @@
-package org.mddarr.ride.query.service.models;
+package org.mddarr.ride.coordinates.service.models;
 
 public class CoordinatesResponse {
     private Double lat;

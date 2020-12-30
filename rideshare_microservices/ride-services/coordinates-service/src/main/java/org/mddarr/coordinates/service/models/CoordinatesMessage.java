@@ -14,7 +14,7 @@ public class CoordinatesMessage {
         CHAT, LEAVE, JOIN, START, END
     }
     private String rideid;
-    private Date time;
+
     private Double latitude;
     private Double longitude;
 
@@ -23,21 +23,15 @@ public class CoordinatesMessage {
     public CoordinatesMessage() {
     }
 
-    public CoordinatesMessage(String trip_id, Date time, Double lat, Double lng ) {
+    public CoordinatesMessage(String trip_id, Double lat, Double lng ) {
         this.rideid = trip_id;
-        this.time = time;
+
         this.latitude = lat;
         this.longitude = lng;
 
     }
 
-    public Date getTime() {
-        return time;
-    }
 
-    public void setTime(Date time) {
-        this.time = time;
-    }
 
     public MessageType getType() {
         return type;

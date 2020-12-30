@@ -17,8 +17,12 @@
     <version>1.0-SNAPSHOT</version>
     
     <modules>
-        <module>rides-query-service</module>
+        <module>ride-request-service</module>
+<!--        <module>coordinates-service</module>-->
+<!--        <module>rides-query-service</module>-->
 <!--        <module>location_tracker</module>-->
+<!--        <module>ride-service</module>-->
+<!--        <module>rides-coordinates-service</module>-->
 <!--        <module>dispatch-service</module>-->
 <!--        <module>rides-query-service</module>-->
 <!--        <module>rides-coordinates-service</module>-->

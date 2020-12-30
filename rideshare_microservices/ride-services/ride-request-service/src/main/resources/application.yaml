@@ -23,16 +23,3 @@ spring:
         interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor
     template:
       default-topic:
-
-## JPA CONFIGURATION
-  datasource:
-    url: jdbc:postgresql://localhost:5432/postgresdb
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update

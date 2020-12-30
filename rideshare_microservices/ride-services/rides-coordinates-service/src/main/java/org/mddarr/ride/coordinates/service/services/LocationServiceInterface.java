@@ -1,12 +1,11 @@
-package org.mddarr.ride.query.service.services;
+package org.mddarr.ride.coordinates.service.services;
 
 
-import org.mddarr.ride.query.service.models.CoordinatesMessage;
-import org.mddarr.ride.query.service.models.RideCoordinate;
+import org.mddarr.ride.coordinates.service.models.CoordinatesMessage;
+import org.mddarr.ride.coordinates.service.models.RideCoordinate;
 
 import java.util.List;
 
-public interface LocationService {
-    public List<RideCoordinate> getRideCoordinates(String rideID);
+public interface LocationServiceInterface {
     public void postCoordinatesData(CoordinatesMessage coordinatesMessage);
 }
