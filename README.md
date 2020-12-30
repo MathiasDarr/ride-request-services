@@ -6,7 +6,6 @@ This repository contains microservices implemented using Spring, frontend develo
 
 
 ## This repository contains ##
-
 * Spring MicroServices
 
 * Ride Request Service

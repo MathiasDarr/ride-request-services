@@ -100,10 +100,10 @@ def populate_rides_table():
 if __name__ =='__main__':
     conn = psycopg2.connect(host="localhost", port="5432", user="postgres", password="postgres", database="postgresdb")
     cur = conn.cursor()
-    # populate_ride_requests_table()
-    # populate_drivers_table()
-    #
-    # populate_users_table()
+    populate_ride_requests_table()
+    populate_drivers_table()
+
+    populate_users_table()
 
     print("THE POSTGRES DATABASE HAS BEEN SEEDED.")
 

@@ -1,10 +1,9 @@
-package org.mddarr.driverservice.controllers;
+package org.mddarr.driversservice.controllers;
 
 
-
-import org.mddarr.driverservice.models.Driver;
-import org.mddarr.driverservice.models.requests.PostDriverRequest;
-import org.mddarr.driverservice.services.DriverService;
+import org.mddarr.driversservice.models.Driver;
+import org.mddarr.driversservice.models.requests.PostDriverRequest;
+import org.mddarr.driversservice.services.DriverService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class DriversController {
 
     @GetMapping(value ="drivers")
     public List<Driver> getDrivers(){
-        return driverService.getPatients();
+        return driverService.getDrivers();
     }
 
     @GetMapping(value="drivers/{driver_id}")
@@ -31,6 +30,6 @@ public class DriversController {
 
     @PutMapping(value="drivers")
     public String createPatient(@RequestBody PostDriverRequest postDriverRequest){
-        return driverService.postPatient(postDriverRequest);
+        return driverService.postDriver(postDriverRequest);
     }
 }
