@@ -13,6 +13,7 @@
     "cassandra.username":"cassandra",
     "cassandra.password":"cassandra",
     "confluent.topic.bootstrap.servers": "kafka:9092",
-    "cassandra.local.datacenter": "datacenter1"
+    "cassandra.local.datacenter": "datacenter1",
+    "confluent.topic.replication.factor": 1
   }
 }
