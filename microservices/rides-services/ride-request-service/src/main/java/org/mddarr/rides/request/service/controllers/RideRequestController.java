@@ -17,8 +17,7 @@ public class RideRequestController {
 
     @PutMapping("rides/requests")
     public String postRideRequest(@RequestBody RideRequest rideRequest){
-        avroRideRequestProducer.sendRideRequest(rideRequest);
-        return "dfd";
+        return avroRideRequestProducer.sendRideRequest(rideRequest);
     }
 
 }

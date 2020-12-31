@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class AvroRideRequestProducer implements AvroRideRequestInterface{
 
@@ -18,10 +20,16 @@ public class AvroRideRequestProducer implements AvroRideRequestInterface{
 
     private static final Logger logger = LoggerFactory.getLogger(AvroRideRequestProducer.class);
 
-    public void sendRideRequest(RideRequest rideRequest) {
-        AvroRideRequest ride = AvroRideRequest.newBuilder().setUserId(rideRequest.getUserid()).setRiders(rideRequest.getRiders()).build();
+    @Override
+    public String sendRideRequest(RideRequest rideRequest) {
+        String request_id = UUID.randomUUID().toString();
+        AvroRideRequest ride = AvroRideRequest.newBuilder()
+                .setRequestId(request_id)
+                .setUserId(rideRequest.getUserid())
+                .setRiders(rideRequest.getRiders()).build();
         logger.info("Send event 1 {}", ride);
         kafkaTemplateEvent1.send(Constants.Rides_TOPIC, ride);
+        return request_id;
     }
 
 }
