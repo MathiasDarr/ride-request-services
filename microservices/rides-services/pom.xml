@@ -18,10 +18,10 @@
     
     <modules>
         <module>event-producer</module>
-<!--        <module>dispatch-service</module>-->
-<!--        <module>drivers-service</module>-->
+        <module>dispatch-service</module>
+        <module>drivers-service</module>
         <module>ride-request-service</module>
-<!--        <module>ride-coordinate-service</module>-->
+        <module>coordinates-service</module>
         <module>avro-schema</module>
     </modules>
     <repositories>
