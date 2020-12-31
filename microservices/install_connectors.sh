@@ -3,5 +3,4 @@ docker exec connect confluent-hub install  debezium/debezium-connector-postgresq
 docker exec connect confluent-hub install confluentinc/kafka-connect-cassandra:latest --no-prompt
 docker restart connect
 sleep 30
-bash scripts/kafka/post.sh connectors/debezium_source_connector.json
-bash scripts/kafka/post.sh connectors/elasticsearch_sink_connector.json
+bash post.sh connectors/cassandra_coordinates_sink_connector.json
