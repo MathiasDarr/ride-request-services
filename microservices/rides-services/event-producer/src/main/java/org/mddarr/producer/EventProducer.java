@@ -31,7 +31,7 @@ public class EventProducer {
         // Set serializers and
         final SpecificAvroSerializer<AvroRideRequest> purchaseEventSerializer = new SpecificAvroSerializer<>();
         purchaseEventSerializer.configure(serdeConfig, false);
-        
+
         Map<String, Object> props = new HashMap<>();
         props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
