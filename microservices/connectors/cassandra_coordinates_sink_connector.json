@@ -14,6 +14,8 @@
     "cassandra.password":"cassandra",
     "confluent.topic.bootstrap.servers": "kafka:9092",
     "cassandra.local.datacenter": "datacenter1",
-    "confluent.topic.replication.factor": 1
+    "confluent.topic.replication.factor": 1,
+    "cassandra.execute.timeout.ms": 80000,
+    "cassandra.table.manage.enabled": "true"
   }
 }
