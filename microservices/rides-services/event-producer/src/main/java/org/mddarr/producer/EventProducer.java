@@ -116,12 +116,11 @@ public class EventProducer {
             driverKafkaTemplate.sendDefault(avroRideCoordinate);
             System.out.println("Writing ride coordinate for '" + avroRideCoordinate.getRideid() + "' to input topic " + Constants.COORDINATES_TOPIC);
             Thread.sleep(3000);
+
+            avroRideCoordinate = new AvroRideCoordinate("ride2", 12.1, 12.0);
+            driverKafkaTemplate.sendDefault(avroRideCoordinate);
+            System.out.println("Writing ride coordinate for '" + avroRideCoordinate.getRideid() + "' to input topic " + Constants.COORDINATES_TOPIC);
+            Thread.sleep(3000);
         }
-
-
-
     }
-
-
-
 }

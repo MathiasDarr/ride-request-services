@@ -40,9 +40,8 @@ def decode(msg_value):
     message_bytes = io.BytesIO(msg_value)
     message_bytes.seek(5)
     decoder = BinaryDecoder(message_bytes)
-    print(decoder)
-    # event_dict = reader.read(decoder)
-    # return event_dict
+    event_dict = reader.read(decoder)
+    return event_dict
 
 def process_row(row):
     row_dictionary = row.asDict()
