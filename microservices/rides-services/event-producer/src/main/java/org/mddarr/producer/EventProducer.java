@@ -110,9 +110,15 @@ public class EventProducer {
         DefaultKafkaProducerFactory<String, AvroRideCoordinate> pf1 = new DefaultKafkaProducerFactory<>(props);
         KafkaTemplate<String, AvroRideCoordinate> driverKafkaTemplate = new KafkaTemplate<>(pf1, true);
         driverKafkaTemplate.setDefaultTopic(Constants.COORDINATES_TOPIC);
-        AvroRideCoordinate avroRideCoordinate = new AvroRideCoordinate("ride1", 12.1, 12.0);
-        driverKafkaTemplate.sendDefault(avroRideCoordinate);
-        System.out.println("Writing ride coordinate for '" + avroRideCoordinate.getRideid() + "' to input topic " + Constants.COORDINATES_TOPIC);
+
+        while(true){
+            AvroRideCoordinate avroRideCoordinate = new AvroRideCoordinate("ride1", 12.1, 12.0);
+            driverKafkaTemplate.sendDefault(avroRideCoordinate);
+            System.out.println("Writing ride coordinate for '" + avroRideCoordinate.getRideid() + "' to input topic " + Constants.COORDINATES_TOPIC);
+            Thread.sleep(3000);
+        }
+
+
 
     }
 
