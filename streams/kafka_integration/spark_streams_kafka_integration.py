@@ -6,7 +6,7 @@ import avro.schema
 from avro.io import BinaryDecoder, DatumReader
 import io
 from pyspark.sql import Row
-from pyspark.sql.avro.functions import from_avro, to_avro
+
 
 
 def getSparkInstance():
@@ -71,21 +71,21 @@ avroDf.select(from_avro(avroDf.avro, jsonFormatSchema).alias("value"))
 
 
 
-# avroStreamingDF = spark \
-#   .readStream \
-#   .format("kafka") \
-#   .option("kafka.bootstrap.servers", "localhost:9092") \
-#   .option("subscribe", "coordinates") \
-#   .load()
-# query = avroStreamingDF \
-#     .select(from_avro("value", schema).alias("value")).collect()
+avroStreamingDF = spark \
+  .readStream \
+  .format("kafka") \
+  .option("kafka.bootstrap.servers", "localhost:9092") \
+  .option("subscribe", "coordinates") \
+  .load()
+query = avroStreamingDF \
+    .select(from_avro("value", schema).alias("value")).collect()
 
 
-# query = streamingDF.writeStream.foreach(lambda x: process_row(x)).start()
+query = streamingDF.writeStream.foreach(lambda x: process_row(x)).start()
 
-# topic1_stream.writeStream \
-#     .foreach(s) \
-#     # .format("console") \
-#     .start()
-#
-# spark.streams.awaitAnyTermination()
+topic1_stream.writeStream \
+    .foreach(s) \
+    # .format("console") \
+    .start()
+
+spark.streams.awaitAnyTermination()
