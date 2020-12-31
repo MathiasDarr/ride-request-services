@@ -15,7 +15,7 @@
 
         <dependency>
             <groupId>org.mddarr</groupId>
-            <artifactId>rides-avro-schema</artifactId>
+            <artifactId>avro-schema</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
