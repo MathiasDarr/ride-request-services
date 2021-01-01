@@ -47,37 +47,12 @@ def process_row(row):
 # `from_avro` requires Avro schema in JSON string format.
 schema = open("schema/coordinates.avsc", "r").read()
 
-# SCHEMA = avro.schema.Parse(json.dumps({
-#     "namespace": "org.mddarr.rides.event.dto",
-#     "type": "record",
-#     "name": "AvroRideRequest",
-#     "fields": [
-#         {"name": "rideid", "type": "string"},
-#         {"name": "latitude", "type": "double"},
-#         {"name": "longitude", "type": "double"}
-#     ]
-# }))
-
-
 streamingDF = spark\
   .readStream\
   .format("kafka")\
   .option("kafka.bootstrap.servers", "localhost:9092")\
   .option("subscribe", "coordinates")\
   .load()
-
-# .select(from_avro("value", schema)) \
-    # .select(from_avro("value", schema))
-# .select(from_avro(output['value'], schema)) \
-# avroDF = streamingDF\
-#   .writeStream \
-#   .foreach(process_row) \
-#   .format("kafka")\
-#   .option("kafka.bootstrap.servers", "localhost:9092")\
-#   .option("checkpointLocation", "checkpoints") \
-#   .option("topic", "coordinates-out")\
-#   .start()
-
 
 avroDF = streamingDF\
   .writeStream\
