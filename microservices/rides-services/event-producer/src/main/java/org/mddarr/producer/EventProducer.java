@@ -54,7 +54,6 @@ public class EventProducer {
 
         Random rand = new Random();
 
-
         Set<AvroDriver> active_drivers = new HashSet<>();
         Set<AvroDriver> inactive_drivers = new HashSet<>();
 
@@ -72,9 +71,7 @@ public class EventProducer {
                     activating_drivers.add(driver);
                 }
             }
-
             System.out.println("THE NUMBER OF ACTIVE DRIVERS IS " + active_drivers.size());
-
 //
 //            for(AvroDriver driver: activating_drivers){
 //
@@ -82,38 +79,30 @@ public class EventProducer {
 //                inactive_drivers.remove(driver);
 //
 //            }
-
             List<AvroDriver> disactivating_drivers = new ArrayList<>();
 
             for(AvroDriver driver: active_drivers){
                 double probablity = rand.nextDouble();
-                if(probablity < .05){
+                if(probablity < .001){
                     disactivating_drivers.add(driver);
                 }
             }
 //
             for(AvroDriver driver: activating_drivers){
 
-                System.out.println("Activating driver " + driver);
+//                System.out.println("Activating driver " + driver);
                 inactive_drivers.remove(driver);
                 active_drivers.add(driver);
             }
             for(AvroDriver driver: disactivating_drivers){
-                System.out.println("Disactivating driver " + driver);
+//                System.out.println("Disactivating driver " + driver);
                 inactive_drivers.add(driver);
                 active_drivers.remove(driver);
             }
 
-            Thread.sleep(160);
-
+            Thread.sleep(3000);
         }
-
-
-
 //        Set<AvroDriver> inactive_drivers =
-
-
-
 //        drivers.forEach(driver -> {
 //            System.out.println("Writing driver for '" + driver.getFirstname() + "' to input topic " +
 //                    Constants.DRIVERS_TOPIC);

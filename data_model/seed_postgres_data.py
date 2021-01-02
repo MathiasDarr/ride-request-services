@@ -5,6 +5,11 @@ Create & populate users, drivers, ride requests & rides relation data model
 import psycopg2
 import csv
 
+import numpy as np
+
+
+
+
 
 def populate_users_table():
     create_users_table = """
@@ -43,19 +48,25 @@ def populate_drivers_table():
                     email VARCHAR(50), 
                     password VARCHAR(50),
                     phone_number VARCHAR(50),
-                    city VARCHAR(50)
+                    city VARCHAR(50),
+                    seats integer,
+                    average_shift_length integer
             );
     """
-    cur.execute(create_drivers_table)
-    conn.commit()
+    try:
+        cur.execute(create_drivers_table)
+        conn.commit()
+    except Exception as e:
+        print(e)
     DRIVERS_CSV_FILE = 'data/drivers/drivers.csv'
-    insert_into_drivers_table = """INSERT INTO drivers(driverid, first_name, last_name, email, password, phone_number, city) VALUES(%s,%s,%s,%s,%s, %s, %s);"""
+    insert_into_drivers_table = """INSERT INTO drivers(driverid, first_name, last_name, email, password, 
+    phone_number, city, seats, average_shift_length) VALUES(%s,%s,%s,%s,%s, %s, %s, %s, %s); """
 
     with open(DRIVERS_CSV_FILE, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
 
         for row in reader:
-            cur.execute(insert_into_drivers_table, [row['driverid'], row['first_name'], row["last_name"], row['email'], row['password'], row['phone_number'], row['city']])
+            cur.execute(insert_into_drivers_table, [row['driverid'], row['first_name'], row["last_name"], row['email'], row['password'], row['phone_number'], row['city'], row['seats'], int(float(row['average_shift_length']))])
     conn.commit()
 
 
@@ -106,7 +117,12 @@ def populate_ride_requests_table():
 if __name__ =='__main__':
     conn = psycopg2.connect(host="localhost", port="5432", user="postgres", password="postgres", database="postgresdb")
     cur = conn.cursor()
+
+
     populate_drivers_table()
+
+
+
     #populate_users_table()
     # populate_ride_requests_table()
     # populate_rides_table()
