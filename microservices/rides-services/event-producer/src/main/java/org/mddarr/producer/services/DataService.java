@@ -56,6 +56,37 @@ public class DataService {
     }
 
 
+    public static String insertSession(String driverID, Integer session_length, Integer session_start, Integer session_end) {
+
+        Statement stmt = null;
+        Connection c = null;
+        String session_id;
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/postgresdb","postgres", "postgres");
+
+            session_id = UUID.randomUUID().toString();
+            stmt = c.createStatement();
+            String sql = String.format("INSERT INTO sessions (\"session_id\",\"driverid\", \"session_length\",\"session_start\", \"session_end\") "
+                    + "VALUES ('%s', '%s', '%d','%d', %d );",session_id, driverID, session_length, session_start, session_end);
+            stmt.executeUpdate(sql);
+            c.close();
+            return session_id;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+            return "-1";
+        }
+    }
+
+
+
+
+
+
+
     public static Driver getDriver(String driverID){
         Statement stmt = null;
         Connection c = null;

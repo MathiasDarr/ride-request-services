@@ -17,8 +17,12 @@ public class DrivingSession {
     private Integer session_length;
     private String state;
     private Random random_object;
-    private Double preordained_session_length;
+    private double preordained_session_length;
 
+
+    public double getPreordained_session_length() {
+        return preordained_session_length;
+    }
 
     public DrivingSession(Driver driver, String session_id){
         this.sessionid = session_id;

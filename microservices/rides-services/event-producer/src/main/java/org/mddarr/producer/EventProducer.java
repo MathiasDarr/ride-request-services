@@ -39,7 +39,6 @@ public class EventProducer {
 
     }
 
-
     public static void populate_drivers() throws InterruptedException {
         final Map<String, String> serdeConfig = Collections.singletonMap(
                 AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
@@ -71,7 +70,7 @@ public class EventProducer {
         Set<DrivingSession> active_sessions = new HashSet<>();
 
         inactive_drivers.addAll(drivers);
-
+        Integer iteration = 0;
         while(true){
 
             List<Driver> activating_drivers = new ArrayList<>();
@@ -82,7 +81,6 @@ public class EventProducer {
                     activating_drivers.add(driver);
                 }
             }
-
 //
             Iterator<DrivingSession> drivingSessionIterator = active_sessions.iterator();
 
@@ -91,7 +89,11 @@ public class EventProducer {
                 if(session.verifySessionEnding()){
                     Driver driver = session.getDriver();
                     inactive_drivers.add(driver);
-                    System.out.println("SESSION WITH DRIVER " + session.getDriver().getFirst_name() + " " + session.getDriver().getLast_name() + " HAS ENDED AT LENGTH " + session.getSession_length());
+                    Integer session_length =  (int) Math.round(session.getPreordained_session_length());
+                    Integer session_start =  (int) Math.round(iteration - session_length);
+                    DataService.insertSession(driver.getDriverid(), session_length, session_start, iteration);
+
+//                    System.out.println("SESSION WITH DRIVER " + session.getDriver().getFirst_name() + " " + session.getDriver().getLast_name() + " HAS ENDED AT LENGTH " + session.getSession_length());
                     drivingSessionIterator.remove();
                     active_drivers.remove(driver);
                 }else{
@@ -106,7 +108,7 @@ public class EventProducer {
                 DrivingSession drivingSession = new DrivingSession(driver, UUID.randomUUID().toString());
                 active_sessions.add(drivingSession);
             }
-
+            iteration += 1;
             Thread.sleep(300);
         }
     }
