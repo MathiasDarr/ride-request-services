@@ -2,6 +2,7 @@
  "type": "record",
  "name": "AvroRideRequest",
  "fields": [
+     {"name": "request_id", "type": "string"},
      {"name": "user_id", "type": "string"},
      {"name": "riders",  "type": "int"}
  ]

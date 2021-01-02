@@ -1,0 +1,9 @@
+{"namespace" : "org.mddarr.rides.event.dto",
+ "type": "record",
+ "name": "AvroDriver",
+ "fields": [
+     {"name": "driverid", "type": "string"},
+     {"name": "firstname",  "type": "string"},
+     {"name": "lastname",  "type": "string"}
+ ]
+}
