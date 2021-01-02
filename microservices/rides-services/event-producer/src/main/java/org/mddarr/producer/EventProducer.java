@@ -18,20 +18,25 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.*;
+import java.util.concurrent.Phaser;
 
 public class EventProducer {
 
     public static void main(String[] args) throws Exception {
-
-        DrivingSession drivingSession = new DrivingSession("driver1", 400);
-//        drivingSession.probabilityThatSessionEnds(120);
-        System.out.println("The probability that the session will end at time 500 is " + drivingSession.probabilityThatSessionEnds(400));
-        DataService.insertDrivingSession("1a49380a-b7a7-4ebd-9edd-9841312f6dd4", 300);
+//        Driver driver = DataService.getDriver("1a49380a-b7a7-4ebd-9edd-9841312f6dd4");
+//        System.out.println("THE DRIVER IS " + driver.getFirst_name() + " " + driver.getLast_name());
+        populate_drivers();
+//        populate_drivers();
+//        DrivingSession drivingSession = new DrivingSession("driver1", 400);
+////        drivingSession.probabilityThatSessionEnds(120);
+////        System.out.println("The probability that the session will end at time 500 is " + drivingSession.probabilityThatSessionEnds(400));
+//        DataService.insertDrivingSession("1a49380a-b7a7-4ebd-9edd-9841312f6dd4", 300);
 //        populate_drivers();
 //        populateCoordinates();
 //
         // populateDrivers();
         // populateRideRequests();
+
     }
 
 
@@ -63,43 +68,49 @@ public class EventProducer {
 
         Set<Driver> active_drivers = new HashSet<>();
         Set<Driver> inactive_drivers = new HashSet<>();
+        Set<DrivingSession> active_sessions = new HashSet<>();
 
-        for(Driver driver: drivers){
-            inactive_drivers.add(driver);
-        }
+        inactive_drivers.addAll(drivers);
 
         while(true){
 
             List<Driver> activating_drivers = new ArrayList<>();
-
+            // Select  the drivers from the inactive pool to activate sessions
             for(Driver driver: inactive_drivers){
                 double probablity = rand.nextDouble();
-                if(probablity < .05){
+                if(probablity < .02){
                     activating_drivers.add(driver);
                 }
             }
+            System.out.println("THE NUMBER OF INACTIVE DRIVERS IS " + inactive_drivers.size());
             System.out.println("THE NUMBER OF ACTIVE DRIVERS IS " + active_drivers.size());
-//
-            List<Driver> disactivating_drivers = new ArrayList<>();
 
-            for(Driver driver: active_drivers){
-                double probablity = rand.nextDouble();
-                if(probablity < .001){
-                    disactivating_drivers.add(driver);
+            System.out.println("THE NUMBER OF ACTIVE SESSIONS IS " + active_sessions.size());
+//
+
+            Iterator<DrivingSession> drivingSessionIterator = active_sessions.iterator();
+
+            while(drivingSessionIterator.hasNext()){
+                DrivingSession session = drivingSessionIterator.next();
+                if(session.verifySessionEnding()){
+                    Driver driver = session.getDriver();
+                    inactive_drivers.add(driver);
+                    drivingSessionIterator.remove();
+                    active_drivers.remove(driver);
+                }else{
+                    session.increment_session_length();
                 }
             }
 
             for(Driver driver: activating_drivers){
                 inactive_drivers.remove(driver);
                 active_drivers.add(driver);
-            }
-            for(Driver driver: disactivating_drivers){
-
-                inactive_drivers.add(driver);
-                active_drivers.remove(driver);
+//                String session_id = DataService.insertDrivingSession(driver.getDriverid(), driver.getAverage_shift_length());
+                DrivingSession drivingSession = new DrivingSession(driver, UUID.randomUUID().toString());
+                active_sessions.add(drivingSession);
             }
 
-            Thread.sleep(3000);
+            Thread.sleep(100);
         }
     }
 

@@ -12,11 +12,14 @@ import java.util.UUID;
 
 public class DataService {
 
+    public DataService(){
+
+    }
+
     public static List<Driver> getDriversFromDB(){
         List<Driver> avroDrivers = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgresdb",
-                "postgres", "postgres");
-             PreparedStatement pst = con.prepareStatement("SELECT driverid, first_name, last_name, average_shift_length FROM drivers");
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgresdb","postgres", "postgres");
+             PreparedStatement pst = con.prepareStatement("SELECT driverid, first_name, last_name, average_shift_length FROM drivers limit 14000");
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 avroDrivers.add(new Driver (rs.getString(1),rs.getString(2),rs.getString(3), rs.getInt(4) ));
@@ -35,15 +38,15 @@ public class DataService {
         try {
             Class.forName("org.postgresql.Driver");
             c = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/postgresdb",
-                            "postgres", "postgres");
+                    .getConnection("jdbc:postgresql://localhost:5432/postgresdb","postgres", "postgres");
 
                 session_id = UUID.randomUUID().toString();
                 stmt = c.createStatement();
                 String sql = String.format("INSERT INTO driving_session (\"session_id\",\"driverid\", \"session_length\",\"session_status\") "
                         + "VALUES ('%s', '%s', '%d','%s' );",session_id, driverID, average_session_length, "MATCHING");
                 stmt.executeUpdate(sql);
-                return session_id;
+            c.close();
+            return session_id;
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
@@ -53,23 +56,31 @@ public class DataService {
     }
 
 
+    public static Driver getDriver(String driverID){
+        Statement stmt = null;
+        Connection c = null;
+        String session_id;
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/postgresdb","postgres", "postgres");
+
+            PreparedStatement pst = c.prepareStatement("SELECT driverid, first_name, last_name, average_shift_length FROM drivers WHERE driverid = ?; ");
+            pst.setString(1, driverID);
+            ResultSet rs = pst.executeQuery();
+            rs.next();
+            Driver driver = new Driver (rs.getString(1),rs.getString(2),rs.getString(3), rs.getInt(4));
+            c.close();
+            return driver;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+            return null;
+        }
+    }
 
 
-
-//    public static List<AvroDriver> getDriversFromDB(){
-//        List<AvroDriver> avroDrivers = new ArrayList<>();
-//        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgresdb",
-//                "postgres", "postgres");
-//             PreparedStatement pst = con.prepareStatement("SELECT driverid, first_name, last_name FROM drivers");
-//             ResultSet rs = pst.executeQuery()) {
-//            while (rs.next()) {
-//                avroDrivers.add(new AvroDriver (rs.getString(1),rs.getString(2),rs.getString(3) ));
-//            }
-//        } catch (SQLException e) {
-//            System.err.println(e.getClass().getName()+": "+e.getMessage());
-//        }
-//        return avroDrivers;
-//    }
 
     public static List<AvroRideRequest> getRideRequestsFromDB(){
         List<AvroRideRequest> avroRideRequests = new ArrayList<>();

@@ -30,4 +30,8 @@ public class Driver {
     public Integer getAverage_shift_length() {
         return average_shift_length;
     }
+
+    public void setAverage_shift_length(Integer average_shift_length) {
+        this.average_shift_length = average_shift_length;
+    }
 }
