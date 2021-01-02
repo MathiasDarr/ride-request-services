@@ -17,6 +17,8 @@ public class DrivingSession {
     private Integer session_length;
     private String state;
     private Random random_object;
+    private Double preordained_session_length;
+
 
     public DrivingSession(Driver driver, String session_id){
         this.sessionid = session_id;
@@ -24,6 +26,8 @@ public class DrivingSession {
         this.sessionid = UUID.randomUUID().toString();
         session_length = 0;
         random_object = new Random();
+        preordained_session_length = random_object.nextGaussian() * length_deviation + driver.getAverage_shift_length();
+//        System.out.println("THE PREORDAINED LENGTH " + preordained_session_length);
     }
 
     public String getDriverid() {
@@ -34,19 +38,12 @@ public class DrivingSession {
         return driver;
     }
 
-    public void setDriver(Driver driver) {
-        this.driver = driver;
-    }
-
-    public void setDriverid(String driverid) {
-        this.driverid = driverid;
-    }
     public void increment_session_length() {
          session_length += 1;
     }
 
-    public void setSession_length(Integer session_length) {
-        this.session_length = session_length;
+    public Integer getSession_length() {
+        return session_length;
     }
 
     private double probabilityThatSessionEnds(){
@@ -58,10 +55,30 @@ public class DrivingSession {
     }
 
     public boolean verifySessionEnding(){
-        /*
-        This method returns true if the session is ending, false if not
-         */
-        return random_object.nextFloat() < probabilityThatSessionEnds();
+        System.out.println("VERIFYING SESSION with PREDORDAINED SESSION LENGTH " + preordained_session_length ) ;
+        System.out.println("VERIFYING SESSION with session_length  " + session_length ) ;
+
+        if(session_length >= preordained_session_length){
+            System.out.println("THE SESSION IS ENDING ");
+            return true;
+        }else{
+            System.out.println("THE SESSION IS NOT ENDING ");
+        }
+
+        return false;
+
+
+
+        //        System.out.println("THE LENGTH OF THE SESSION IS " + session_length);
+//        System.out.println(driver.getAverage_shift_length());
+//        System.out.println("AVERAGE TRIP LENGTH " + driver.getAverage_shift_length());
+//        System.out.println("THE probability that the session is ending is " + probabilityThatSessionEnds());
+//
+//
+//        /*
+//        This method returns true if the session is ending, false if not
+//         */
+
 
 
     }

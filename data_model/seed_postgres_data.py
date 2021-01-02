@@ -70,8 +70,25 @@ def create_driving_session_table():
             CREATE TABLE driving_sessions (
                     session_id VARCHAR(50),
                     driverid VARCHAR(50) REFERENCES drivers(driverid),
-                    session_length VARCHAR(50),
                     session_status VARCHAR(50)
+            );
+    """
+    try:
+        cur.execute(create_driving_session_table)
+        conn.commit()
+    except Exception as e:
+        print(e)
+    conn.commit()
+
+
+def create_sessions_table():
+    create_driving_session_table = """
+            CREATE TABLE sessions (
+                    session_id VARCHAR(50),
+                    driverid VARCHAR(50) REFERENCES drivers(driverid),
+                    session_start integer,
+                    session_end integer,
+                    session_length integer
             );
     """
     try:
@@ -130,7 +147,7 @@ if __name__ =='__main__':
     conn = psycopg2.connect(host="localhost", port="5432", user="postgres", password="postgres", database="postgresdb")
     cur = conn.cursor()
 
-    create_driving_session_table()
+    create_sessions_table()
 
     # populate_drivers_table()
 

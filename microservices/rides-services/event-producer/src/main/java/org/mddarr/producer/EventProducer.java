@@ -82,12 +82,8 @@ public class EventProducer {
                     activating_drivers.add(driver);
                 }
             }
-            System.out.println("THE NUMBER OF INACTIVE DRIVERS IS " + inactive_drivers.size());
-            System.out.println("THE NUMBER OF ACTIVE DRIVERS IS " + active_drivers.size());
 
-            System.out.println("THE NUMBER OF ACTIVE SESSIONS IS " + active_sessions.size());
 //
-
             Iterator<DrivingSession> drivingSessionIterator = active_sessions.iterator();
 
             while(drivingSessionIterator.hasNext()){
@@ -95,6 +91,7 @@ public class EventProducer {
                 if(session.verifySessionEnding()){
                     Driver driver = session.getDriver();
                     inactive_drivers.add(driver);
+                    System.out.println("SESSION WITH DRIVER " + session.getDriver().getFirst_name() + " " + session.getDriver().getLast_name() + " HAS ENDED AT LENGTH " + session.getSession_length());
                     drivingSessionIterator.remove();
                     active_drivers.remove(driver);
                 }else{
@@ -110,7 +107,7 @@ public class EventProducer {
                 active_sessions.add(drivingSession);
             }
 
-            Thread.sleep(100);
+            Thread.sleep(300);
         }
     }
 
