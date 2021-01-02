@@ -10,7 +10,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>dispatch-service</artifactId>
+    <artifactId>socket-service</artifactId>
 
     <properties>
         <java.version>11</java.version>
@@ -21,8 +21,8 @@
     <dependencies>
         <dependency>
             <groupId>org.mddarr</groupId>
-            <artifactId>rides-avro-schema</artifactId>
-            <version>${project.version}</version>
+            <artifactId>avro-schema</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
 
@@ -213,39 +213,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.18.1</version>
-                <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
-                    <groups>org.mddarr.dispatchservice.IntegrationTest</groups>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>run-tests</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18.1</version>
-                <configuration>
-                    <includes>
-                        <include>**/*.java</include>
-                    </includes>
-                    <excludedGroups>org.mddarr.dispatchservice.IntegrationTest
-                    </excludedGroups>
-                </configuration>
             </plugin>
         </plugins>
     </build>

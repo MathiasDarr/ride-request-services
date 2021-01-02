@@ -1,25 +1,14 @@
 version: '2'
 services:
-  #  mysql:
-  #    image: mariadb
-  #    ports:
-  ##      - "3306:3306"
-  #    environment:
-  #      MYSQL_ROOT_PASSWORD: pwd
-  #      MYSQL_DATABASE: sample_mysql_db
-  #    volumes:
-  #      - data-volume:/var/lib/mysql
-
-
-#  postgres:
-#    image: debezium/example-postgres:${DEBEZIUM_VERSION}
-#    ports:
-#      - 5432:5432
-#    environment:
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=postgres
-#      - POSTGRES_DB=postgresdb
-#    container_name: postgres
+  postgres:
+    image: debezium/example-postgres:${DEBEZIUM_VERSION}
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgresdb
+    container_name: postgres
 #
   cassandra:
     container_name: cassandra

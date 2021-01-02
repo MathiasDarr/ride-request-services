@@ -4,7 +4,7 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
-import org.mddarr.ridereceiver.models.WordCount;
+
 import org.mddarr.rides.event.dto.AvroDriver;
 import org.mddarr.rides.event.dto.AvroRideRequest;
 import org.springframework.boot.SpringApplication;

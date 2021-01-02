@@ -9,25 +9,29 @@ import csv
 def populate_users_table():
     create_users_table = """
             CREATE TABLE users (
-                    user_id VARCHAR(50) PRIMARY KEY,
-                    first_name VARCHAR(30),
-                    last_name VARCHAR(30),
-                    email VARCHAR(30),
-                    password VARCHAR(30)
+                    userid VARCHAR(50) PRIMARY KEY,
+                    first_name VARCHAR(50),
+                    last_name VARCHAR(50),
+                    city VARCHAR(50),
+                    phone_number VARCHAR(50),
+                    email VARCHAR(50),
+                    password VARCHAR(50)
             );
     """
     cur.execute(create_users_table)
     conn.commit()
     USERS_CSV_FILE = 'data/users/users.csv'
-    insert_into_users_table = """INSERT INTO users(user_id, first_name, last_name, email, password) VALUES(%s,%s,%s, %s, %s);"""
-
+    insert_into_users_table = """INSERT INTO users(userid, first_name, last_name, email, password, phone_number, city) VALUES(%s,%s,%s, %s, %s, %s, %s);"""
     with open(USERS_CSV_FILE, newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
 
+        reader = csv.DictReader(csvfile)
+        i = 0
         for row in reader:
-            a = [row['user_id'], row['first_name'], row["last_name"], row['email'], row['password']]
-            cur.execute(insert_into_users_table, [row['user_id'], row['first_name'], row["last_name"], row['email'], row['password']])
-    conn.commit()
+            i += 1
+            cur.execute(insert_into_users_table, [row['userid'], row['first_name'], row["last_name"], row['email'], row['password'], row['phone_number'], row['city']])
+            conn.commit()
+            print(row)
+
 
 
 def populate_drivers_table():
@@ -100,8 +104,8 @@ def populate_ride_requests_table():
 if __name__ =='__main__':
     conn = psycopg2.connect(host="localhost", port="5432", user="postgres", password="postgres", database="postgresdb")
     cur = conn.cursor()
-    populate_drivers_table()
+    # populate_drivers_table()
     populate_users_table()
-    populate_ride_requests_table()
-    populate_rides_table()
+    # populate_ride_requests_table()
+    # populate_rides_table()
     print("THE POSTGRES DATABASE HAS BEEN SEEDED.")
