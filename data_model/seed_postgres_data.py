@@ -67,7 +67,7 @@ def populate_drivers_table():
 
 def create_driving_session_table():
     create_driving_session_table = """
-            CREATE TABLE driving_session (
+            CREATE TABLE driving_sessions (
                     session_id VARCHAR(50),
                     driverid VARCHAR(50) REFERENCES drivers(driverid),
                     session_length VARCHAR(50),

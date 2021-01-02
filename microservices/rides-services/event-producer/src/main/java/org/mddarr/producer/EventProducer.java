@@ -26,13 +26,14 @@ public class EventProducer {
         DrivingSession drivingSession = new DrivingSession("driver1", 400);
 //        drivingSession.probabilityThatSessionEnds(120);
         System.out.println("The probability that the session will end at time 500 is " + drivingSession.probabilityThatSessionEnds(400));
-
+        DataService.insertDrivingSession("1a49380a-b7a7-4ebd-9edd-9841312f6dd4", 300);
 //        populate_drivers();
 //        populateCoordinates();
 //
         // populateDrivers();
         // populateRideRequests();
     }
+
 
     public static void populate_drivers() throws InterruptedException {
         final Map<String, String> serdeConfig = Collections.singletonMap(
@@ -79,12 +80,6 @@ public class EventProducer {
             }
             System.out.println("THE NUMBER OF ACTIVE DRIVERS IS " + active_drivers.size());
 //
-//            for(AvroDriver driver: activating_drivers){
-//
-//                System.out.println("Activating driver " + driver);
-//                inactive_drivers.remove(driver);
-//
-//            }
             List<Driver> disactivating_drivers = new ArrayList<>();
 
             for(Driver driver: active_drivers){
@@ -93,28 +88,19 @@ public class EventProducer {
                     disactivating_drivers.add(driver);
                 }
             }
-//
-            for(Driver driver: activating_drivers){
 
-//                System.out.println("Activating driver " + driver);
+            for(Driver driver: activating_drivers){
                 inactive_drivers.remove(driver);
                 active_drivers.add(driver);
             }
             for(Driver driver: disactivating_drivers){
-//                System.out.println("Disactivating driver " + driver);
+
                 inactive_drivers.add(driver);
                 active_drivers.remove(driver);
             }
 
             Thread.sleep(3000);
         }
-//        Set<AvroDriver> inactive_drivers =
-//        drivers.forEach(driver -> {
-//            System.out.println("Writing driver for '" + driver.getFirstname() + "' to input topic " +
-//                    Constants.DRIVERS_TOPIC);
-//            driverKafkaTemplate.sendDefault(driver);
-//            Thread.sleep();
-//        });
     }
 
 

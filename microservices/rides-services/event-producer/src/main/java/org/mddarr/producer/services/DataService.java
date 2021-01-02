@@ -8,6 +8,7 @@ import org.mddarr.rides.event.dto.AvroRideRequest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class DataService {
 
@@ -25,6 +26,33 @@ public class DataService {
         }
         return avroDrivers;
     }
+
+    public static String insertDrivingSession(String driverID, Integer average_session_length) {
+
+        Statement stmt = null;
+        Connection c = null;
+        String session_id;
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/postgresdb",
+                            "postgres", "postgres");
+
+                session_id = UUID.randomUUID().toString();
+                stmt = c.createStatement();
+                String sql = String.format("INSERT INTO driving_session (\"session_id\",\"driverid\", \"session_length\",\"session_status\") "
+                        + "VALUES ('%s', '%s', '%d','%s' );",session_id, driverID, average_session_length, "MATCHING");
+                stmt.executeUpdate(sql);
+                return session_id;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+            return "-1";
+        }
+    }
+
+
 
 
 
