@@ -6,19 +6,26 @@ This repository contains microservices implemented using Spring, frontend develo
 
 
 ## This repository contains ##
+* [Data Model](data_model/README.md)
+
+
+
+
+
 * Spring MicroServices
 
-* Ride Request Service
-    * exposes REST endpoint for authenticated users to request ride
-    * Uses kafka producer API to post ride request message to kafka
-* Ride Coordinate Service
-    * communicates with clients via web sockets 
-    * receives timestamps & coordinates from client, producing to kafka with avro serializaiton
-* Dispatch Service
-    * stream processing service leveraging kafka cloud streams API with Kafka binder
-    * Reads from drivers topic & ride requests topic
-* Rides Query Service
-    * exposes REST endpoints for querying the rides
+* [](data_model/README.md)
+    * Ride Request Service
+        * exposes REST endpoint for authenticated users to request ride
+        * Uses kafka producer API to post ride request message to kafka
+    * Ride Coordinate Service
+        * communicates with clients via web sockets 
+        * receives timestamps & coordinates from client, producing to kafka with avro serializaiton
+    * Dispatch Service
+        * stream processing service leveraging kafka cloud streams API with Kafka binder
+        * Reads from drivers topic & ride requests topic
+    * Rides Query Service
+        * exposes REST endpoints for querying the rides
 
 
 ## Vue JS front end ##

@@ -1,3 +1,13 @@
+
+
+
+[
+{"namespace": "org.mddarr.orders.event.dto",
+ "type": "enum",
+ "name": "OrderState",
+ "symbols" : ["INACTIVE", "ASSIGNED_RIDE", "COMPLETING_RIDE", "ACTIVE"]
+},
+
 {"namespace" : "org.mddarr.rides.event.dto",
  "type": "record",
  "name": "AvroDriver",
@@ -7,3 +17,5 @@
      {"name": "lastname",  "type": "string"}
  ]
 }
+
+]

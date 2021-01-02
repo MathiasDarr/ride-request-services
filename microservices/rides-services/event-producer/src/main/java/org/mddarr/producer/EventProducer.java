@@ -21,12 +21,109 @@ import java.util.*;
 public class EventProducer {
 
     public static void main(String[] args) throws Exception {
-        populateRides();
+        populate_drivers();
 //        populateCoordinates();
 //
         // populateDrivers();
         // populateRideRequests();
     }
+
+    public static void populate_drivers() throws InterruptedException {
+        final Map<String, String> serdeConfig = Collections.singletonMap(
+                AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
+        // Set serializers and
+        final SpecificAvroSerializer<AvroDriver> purchaseEventSerializer = new SpecificAvroSerializer<>();
+        purchaseEventSerializer.configure(serdeConfig, false);
+
+        Map<String, Object> props = new HashMap<>();
+        props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ProducerConfig.RETRIES_CONFIG, 0);
+        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
+        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
+        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, purchaseEventSerializer.getClass());
+
+        DefaultKafkaProducerFactory<String, AvroDriver> pf1 = new DefaultKafkaProducerFactory<>(props);
+        KafkaTemplate<String, AvroDriver> driverKafkaTemplate = new KafkaTemplate<>(pf1, true);
+        driverKafkaTemplate.setDefaultTopic(Constants.DRIVERS_TOPIC);
+
+        List<AvroDriver> drivers = DataService.getDriversFromDB();
+        System.out.println(drivers);
+
+        Random rand = new Random();
+
+
+        Set<AvroDriver> active_drivers = new HashSet<>();
+        Set<AvroDriver> inactive_drivers = new HashSet<>();
+
+        for(AvroDriver avroDriver: drivers){
+            inactive_drivers.add(avroDriver);
+        }
+
+        while(true){
+
+            List<AvroDriver> activating_drivers = new ArrayList<>();
+
+            for(AvroDriver driver: inactive_drivers){
+                double probablity = rand.nextDouble();
+                if(probablity < .05){
+                    activating_drivers.add(driver);
+                }
+            }
+
+            System.out.println("THE NUMBER OF ACTIVE DRIVERS IS " + active_drivers.size());
+
+//
+//            for(AvroDriver driver: activating_drivers){
+//
+//                System.out.println("Activating driver " + driver);
+//                inactive_drivers.remove(driver);
+//
+//            }
+
+            List<AvroDriver> disactivating_drivers = new ArrayList<>();
+
+            for(AvroDriver driver: active_drivers){
+                double probablity = rand.nextDouble();
+                if(probablity < .05){
+                    disactivating_drivers.add(driver);
+                }
+            }
+//
+            for(AvroDriver driver: activating_drivers){
+
+                System.out.println("Activating driver " + driver);
+                inactive_drivers.remove(driver);
+                active_drivers.add(driver);
+            }
+            for(AvroDriver driver: disactivating_drivers){
+                System.out.println("Disactivating driver " + driver);
+                inactive_drivers.add(driver);
+                active_drivers.remove(driver);
+            }
+
+            Thread.sleep(160);
+
+        }
+
+
+
+//        Set<AvroDriver> inactive_drivers =
+
+
+
+//        drivers.forEach(driver -> {
+//            System.out.println("Writing driver for '" + driver.getFirstname() + "' to input topic " +
+//                    Constants.DRIVERS_TOPIC);
+//            driverKafkaTemplate.sendDefault(driver);
+//            Thread.sleep();
+//        });
+    }
+
+
+
     public static void populateRides() throws Exception{
 
         final Map<String, String> serdeConfig = Collections.singletonMap(
@@ -110,7 +207,7 @@ public class EventProducer {
         KafkaTemplate<String, AvroDriver> driverKafkaTemplate = new KafkaTemplate<>(pf1, true);
         driverKafkaTemplate.setDefaultTopic(Constants.DRIVERS_TOPIC);
 
-        List<AvroDriver> drivers = DataService.getProductsFromDB();
+        List<AvroDriver> drivers = DataService.getDriversFromDB();
 
         drivers.forEach(driver -> {
             System.out.println("Writing driver for '" + driver.getFirstname() + "' to input topic " +

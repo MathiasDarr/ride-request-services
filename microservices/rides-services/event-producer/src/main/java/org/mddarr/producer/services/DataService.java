@@ -9,11 +9,11 @@ import java.util.List;
 
 public class DataService {
 
-    public static List<AvroDriver> getProductsFromDB(){
+    public static List<AvroDriver> getDriversFromDB(){
         List<AvroDriver> avroDrivers = new ArrayList<>();
         try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgresdb",
                 "postgres", "postgres");
-             PreparedStatement pst = con.prepareStatement("SELECT driver_id, first_name, last_name FROM drivers");
+             PreparedStatement pst = con.prepareStatement("SELECT driverid, first_name, last_name FROM drivers limit 100");
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 avroDrivers.add(new AvroDriver (rs.getString(1),rs.getString(2),rs.getString(3) ));

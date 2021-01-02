@@ -10,10 +10,8 @@ import csv
 import random
 import uuid
 
-
 fake = Faker()
 fake.random.seed(4321)
-
 
 
 def generate_drivers_data():
@@ -41,7 +39,6 @@ def generate_drivers_data():
                     'password': password, 'city': city, 'phone_number': phone_number}
             users.append(user)
         dict_writer.writerows(users)
-
 
 
 

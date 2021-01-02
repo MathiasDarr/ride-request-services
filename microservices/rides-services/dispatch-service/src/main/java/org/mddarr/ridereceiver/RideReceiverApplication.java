@@ -30,6 +30,7 @@ public class RideReceiverApplication {
 	public static final int WINDOW_SIZE_MS = 30_000;
 
 
+
 	@Bean
 	public Function<KStream<String, AvroRideRequest>, KStream<String, AvroRideRequest>>  process() {
 		return (rideRequestStream) -> {
