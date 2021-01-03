@@ -74,5 +74,5 @@ def generate_users_data():
 
 
 if __name__=='__main__':
-    generate_drivers_data()
+    generate_users_data()
     print("DATA HAS BEEN GENERATED")

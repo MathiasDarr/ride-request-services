@@ -4,6 +4,7 @@ import org.mddarr.producer.models.Driver;
 import org.mddarr.producer.models.DrivingSession;
 import org.mddarr.producer.models.RideRequestSession;
 import org.mddarr.producer.models.User;
+import org.mddarr.producer.repositories.DriverRepository;
 import org.mddarr.producer.repositories.UserRepository;
 import org.mddarr.producer.services.DataService;
 
@@ -26,13 +27,9 @@ import java.util.*;
 public class EventProducer {
 
     public static void main(String[] args) throws Exception {
-        populateRides();
+        populateDrivers();
 
     }
-
-
-
-
 
     public static void populate_drivers() throws InterruptedException {
         final Map<String, String> serdeConfig = Collections.singletonMap(
@@ -107,7 +104,6 @@ public class EventProducer {
 
 
     public static void populateRides() throws Exception{
-        System.out.println("I AWDFDF");
         KafkaGenericTemplate<AvroRide> kafkaGenericTemplate = new KafkaGenericTemplate<AvroRide>();
         KafkaTemplate<String, AvroRide> rideRequestKafkaTemplate = kafkaGenericTemplate.getKafkaTemplate();
         rideRequestKafkaTemplate.setDefaultTopic(Constants.RIDE_REQUEST_TOPIC);
@@ -162,48 +158,12 @@ public class EventProducer {
 
     }
 
-
-
-
-    public static void populateRideRequests() throws Exception{
-        final Map<String, String> serdeConfig = Collections.singletonMap(
-                AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
-        // Set serializers and
-        final SpecificAvroSerializer<AvroRideRequest> purchaseEventSerializer = new SpecificAvroSerializer<>();
-        purchaseEventSerializer.configure(serdeConfig, false);
-
-        Map<String, Object> props = new HashMap<>();
-        props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ProducerConfig.RETRIES_CONFIG, 0);
-        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
-        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
-        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, purchaseEventSerializer.getClass());
-
-
-        DefaultKafkaProducerFactory<String, AvroRideRequest> pf1 = new DefaultKafkaProducerFactory<>(props);
-        KafkaTemplate<String, AvroRideRequest> rideRequestKafkaTemplate = new KafkaTemplate<>(pf1, true);
-        rideRequestKafkaTemplate.setDefaultTopic(Constants.RIDE_REQUEST_TOPIC);
-
-        List<AvroRideRequest> rideRequests = DataService.getRideRequestsFromDB();
-
-        rideRequests.forEach(rideRequest -> {
-            System.out.println("Writing ride request for '" + rideRequest.getRequestId() + "' to input topic " +
-                    Constants.RIDE_REQUEST_TOPIC);
-            rideRequestKafkaTemplate.sendDefault(rideRequest);
-        });
-    }
-
-
-//    public static void populateDrivers() throws Exception{
+//    public static void populateRideRequests() throws Exception{
 //        final Map<String, String> serdeConfig = Collections.singletonMap(
 //                AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
 //        // Set serializers and
-//        final SpecificAvroSerializer<AvroDriver> purchaseEventSerializer = new SpecificAvroSerializer<>();
+//        final SpecificAvroSerializer<AvroRideRequest> purchaseEventSerializer = new SpecificAvroSerializer<>();
 //        purchaseEventSerializer.configure(serdeConfig, false);
-//
 //
 //        Map<String, Object> props = new HashMap<>();
 //        props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
@@ -216,18 +176,37 @@ public class EventProducer {
 //        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, purchaseEventSerializer.getClass());
 //
 //
-//        DefaultKafkaProducerFactory<String, AvroDriver> pf1 = new DefaultKafkaProducerFactory<>(props);
-//        KafkaTemplate<String, AvroDriver> driverKafkaTemplate = new KafkaTemplate<>(pf1, true);
-//        driverKafkaTemplate.setDefaultTopic(Constants.DRIVERS_TOPIC);
+//        DefaultKafkaProducerFactory<String, AvroRideRequest> pf1 = new DefaultKafkaProducerFactory<>(props);
+//        KafkaTemplate<String, AvroRideRequest> rideRequestKafkaTemplate = new KafkaTemplate<>(pf1, true);
 //
-//        List<AvroDriver> drivers = DataService.getDriversFromDB();
 //
-//        drivers.forEach(driver -> {
-//            System.out.println("Writing driver for '" + driver.getFirstname() + "' to input topic " +
-//                    Constants.DRIVERS_TOPIC);
-//            driverKafkaTemplate.sendDefault(driver);
+//
+//        rideRequestKafkaTemplate.setDefaultTopic(Constants.RIDE_REQUEST_TOPIC);
+//
+//        List<AvroRideRequest> rideRequests = DataService.getRideRequestsFromDB();
+//
+//        rideRequests.forEach(rideRequest -> {
+//            System.out.println("Writing ride request for '" + rideRequest.getRequestId() + "' to input topic " +
+//                    Constants.RIDE_REQUEST_TOPIC);
+//            rideRequestKafkaTemplate.sendDefault(rideRequest);
 //        });
 //    }
+
+
+    public static void populateDrivers() throws Exception{
+
+        KafkaGenericTemplate<AvroDriver> kafkaGenericTemplate = new KafkaGenericTemplate<>();
+        KafkaTemplate<String, AvroDriver> driverKafkaTemplate = kafkaGenericTemplate.getKafkaTemplate();
+
+        driverKafkaTemplate.setDefaultTopic(Constants.DRIVERS_TOPIC);
+        List<Driver> drivers = DriverRepository.getDriversFromDB();
+
+        drivers.forEach(driver -> {
+            System.out.println("Writing driver for '" + driver.getFirst_name() + "' to input topic " +
+                    Constants.DRIVERS_TOPIC);
+            driverKafkaTemplate.sendDefault(new AvroDriver(driver.getDriverid(), driver.getFirst_name(), driver.getLast_name()));
+        });
+    }
 
     public static void populateCoordinates() throws Exception{
         final Map<String, String> serdeConfig = Collections.singletonMap(
