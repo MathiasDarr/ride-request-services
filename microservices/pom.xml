@@ -21,6 +21,7 @@
 	<modules>
 		<module>rides-services</module>
 
+
 		<!--		<module>driver-service</module>-->
 <!--		<module>transaction-kafka-samples/function-composition</module>-->
 
