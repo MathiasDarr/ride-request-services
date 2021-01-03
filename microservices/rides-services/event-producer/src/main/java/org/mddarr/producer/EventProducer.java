@@ -2,6 +2,9 @@ package org.mddarr.producer;
 
 import org.mddarr.producer.models.Driver;
 import org.mddarr.producer.models.DrivingSession;
+import org.mddarr.producer.models.RideRequestSession;
+import org.mddarr.producer.models.User;
+import org.mddarr.producer.repositories.UserRepository;
 import org.mddarr.producer.services.DataService;
 
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
@@ -22,20 +25,12 @@ import java.util.concurrent.Phaser;
 
 public class EventProducer {
 
+    public EventProducer(){
+
+    }
+
     public static void main(String[] args) throws Exception {
-//        Driver driver = DataService.getDriver("1a49380a-b7a7-4ebd-9edd-9841312f6dd4");
-//        System.out.println("THE DRIVER IS " + driver.getFirst_name() + " " + driver.getLast_name());
-        populate_drivers();
-//        populate_drivers();
-//        DrivingSession drivingSession = new DrivingSession("driver1", 400);
-////        drivingSession.probabilityThatSessionEnds(120);
-////        System.out.println("The probability that the session will end at time 500 is " + drivingSession.probabilityThatSessionEnds(400));
-//        DataService.insertDrivingSession("1a49380a-b7a7-4ebd-9edd-9841312f6dd4", 300);
-//        populate_drivers();
-//        populateCoordinates();
-//
-        // populateDrivers();
-        // populateRideRequests();
+        populate_user_ride_requests();
 
     }
 
@@ -140,6 +135,67 @@ public class EventProducer {
         rideRequestKafkaTemplate.sendDefault(avroRide);
 
     }
+
+
+    public static void populate_user_ride_requests() throws InterruptedException {
+
+        final Map<String, String> serdeConfig = Collections.singletonMap(
+                AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
+        // Set serializers and
+        final SpecificAvroSerializer<AvroRideRequest> purchaseEventSerializer = new SpecificAvroSerializer<>();
+        purchaseEventSerializer.configure(serdeConfig, false);
+
+        Map<String, Object> props = new HashMap<>();
+        props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ProducerConfig.RETRIES_CONFIG, 0);
+        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
+        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
+        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, purchaseEventSerializer.getClass());
+
+        int iteration = 0;
+
+        List<User> users = UserRepository.getUsers();
+        System.out.println("Users " + users.size());
+
+        Random random_object = new Random();
+        Set<User> available_users = new HashSet<>(users);
+
+        while(true) {
+
+            List<User> requesting_users = new ArrayList<>();
+
+            // Select  the drivers from the inactive pool to activate sessions
+            for (User user : available_users) {
+                double probablity = random_object.nextDouble();
+                if (probablity < .005) {
+                    requesting_users.add(user);
+                }
+            }
+
+            Iterator<User> availableUserIterator = users.iterator();
+
+            while (availableUserIterator.hasNext()) {
+                User user = availableUserIterator.next();
+                double ride_request_probability = random_object.nextDouble();
+
+                if (ride_request_probability < .008) {
+                    RideRequestSession rideRequestSession = new RideRequestSession(user, iteration);
+                    String requestid = rideRequestSession.getRequestid();
+                    available_users.remove(user);
+                    requesting_users.add(user);
+                }
+            }
+            iteration += 1;
+            Thread.sleep(200);
+
+        }
+
+    }
+
+
 
 
     public static void populateRideRequests() throws Exception{

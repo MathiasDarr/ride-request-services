@@ -30,6 +30,12 @@ public class DataService {
         return avroDrivers;
     }
 
+
+
+
+
+
+
     public static String insertDrivingSession(String driverID, Integer average_session_length) {
 
         Statement stmt = null;

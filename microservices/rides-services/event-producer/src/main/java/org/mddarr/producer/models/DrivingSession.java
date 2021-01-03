@@ -9,7 +9,6 @@ public class DrivingSession {
 
     private String sessionid;
     private Driver driver;
-    private String driverid;
     private Integer length_deviation = 150;
 
     private Random random_object;
@@ -38,17 +37,13 @@ public class DrivingSession {
 
         this.session_start = session_start;
         this.session_end = preordained_session_length + session_start;
-        
+
         System.out.println("INITIALIZING SESSION STARTING AT " + session_start + " which will end " + session_end + "with length  " + preordained_session_length);
 
         session_length += 1;
 
 //        preordained_session_length = random_object.nextGaussian() * length_deviation + driver.getAverage_shift_length();
 //        System.out.println("THE PREORDAINED LENGTH " + preordained_session_length);
-    }
-
-    public String getDriverid() {
-        return driverid;
     }
 
     public Driver getDriver() {
@@ -70,10 +65,6 @@ public class DrivingSession {
     public int getSession_end() {
         return session_end;
     }
-
-//    public boolean verifySessionEnding(int iteration){
-//        return iteration >= session_end;
-//    }
 
     public String getSessionid() {
         return sessionid;
