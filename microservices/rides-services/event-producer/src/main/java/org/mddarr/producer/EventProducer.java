@@ -86,14 +86,14 @@ public class EventProducer {
 
             while(drivingSessionIterator.hasNext()){
                 DrivingSession session = drivingSessionIterator.next();
-                if(session.verifySessionEnding()){
+                if(session.verifySessionEnding(iteration)){
                     Driver driver = session.getDriver();
                     inactive_drivers.add(driver);
-                    Integer session_length =  (int) Math.round(session.getPreordained_session_length());
-                    Integer session_start =  (int) Math.round(iteration - session_length);
-                    DataService.insertSession(driver.getDriverid(), session_length, session_start, iteration);
 
-//                    System.out.println("SESSION WITH DRIVER " + session.getDriver().getFirst_name() + " " + session.getDriver().getLast_name() + " HAS ENDED AT LENGTH " + session.getSession_length());
+                    DataService.insertSession( session.getSessionid() ,driver.getDriverid(), session.getSession_length(), session.getSession_start(), iteration);
+
+                    System.out.println("SESSION WITH DRIVER " + driver.getFirst_name() + " " + driver.getLast_name() + " HAS ENDED AT LENGTH " + session.getSession_length());
+
                     drivingSessionIterator.remove();
                     active_drivers.remove(driver);
                 }else{
@@ -105,14 +105,13 @@ public class EventProducer {
                 inactive_drivers.remove(driver);
                 active_drivers.add(driver);
 //                String session_id = DataService.insertDrivingSession(driver.getDriverid(), driver.getAverage_shift_length());
-                DrivingSession drivingSession = new DrivingSession(driver, UUID.randomUUID().toString());
+                DrivingSession drivingSession = new DrivingSession(driver, UUID.randomUUID().toString(), iteration);
                 active_sessions.add(drivingSession);
             }
             iteration += 1;
-            Thread.sleep(300);
+            Thread.sleep(100);
         }
     }
-
 
 
     public static void populateRides() throws Exception{

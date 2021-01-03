@@ -19,7 +19,7 @@ public class DataService {
     public static List<Driver> getDriversFromDB(){
         List<Driver> avroDrivers = new ArrayList<>();
         try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgresdb","postgres", "postgres");
-             PreparedStatement pst = con.prepareStatement("SELECT driverid, first_name, last_name, average_shift_length FROM drivers limit 14000");
+             PreparedStatement pst = con.prepareStatement("SELECT driverid, first_name, last_name, average_shift_length FROM drivers limit 50");
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 avroDrivers.add(new Driver (rs.getString(1),rs.getString(2),rs.getString(3), rs.getInt(4) ));
@@ -56,17 +56,16 @@ public class DataService {
     }
 
 
-    public static String insertSession(String driverID, Integer session_length, Integer session_start, Integer session_end) {
+    public static String insertSession(String session_id, String driverID, Integer session_length, Integer session_start, Integer session_end) {
 
         Statement stmt = null;
         Connection c = null;
-        String session_id;
+
         try {
             Class.forName("org.postgresql.Driver");
             c = DriverManager
                     .getConnection("jdbc:postgresql://localhost:5432/postgresdb","postgres", "postgres");
 
-            session_id = UUID.randomUUID().toString();
             stmt = c.createStatement();
             String sql = String.format("INSERT INTO sessions (\"session_id\",\"driverid\", \"session_length\",\"session_start\", \"session_end\") "
                     + "VALUES ('%s', '%s', '%d','%d', %d );",session_id, driverID, session_length, session_start, session_end);
@@ -80,12 +79,6 @@ public class DataService {
             return "-1";
         }
     }
-
-
-
-
-
-
 
     public static Driver getDriver(String driverID){
         Statement stmt = null;

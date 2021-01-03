@@ -8,29 +8,42 @@ import java.util.UUID;
 public class DrivingSession {
 
     private String sessionid;
-
-
     private Driver driver;
-
     private String driverid;
     private Integer length_deviation = 150;
-    private Integer session_length;
-    private String state;
-    private Random random_object;
-    private double preordained_session_length;
 
+    private Random random_object;
+    private int preordained_session_length;
+    private int session_length;
+    private int session_start;
+    private int session_end;
 
     public double getPreordained_session_length() {
         return preordained_session_length;
     }
 
-    public DrivingSession(Driver driver, String session_id){
+    public DrivingSession(Driver driver, String session_id, int session_start){
         this.sessionid = session_id;
         this.driver = driver;
         this.sessionid = UUID.randomUUID().toString();
-        session_length = 0;
+
         random_object = new Random();
-        preordained_session_length = random_object.nextGaussian() * length_deviation + driver.getAverage_shift_length();
+
+        Double determined_session_length = (random_object.nextGaussian() * length_deviation + driver.getAverage_shift_length());
+        this.preordained_session_length = determined_session_length.intValue();
+
+        if(preordained_session_length <= 15){
+            preordained_session_length = 15;
+        }
+
+        this.session_start = session_start;
+        this.session_end = preordained_session_length + session_start;
+        
+        System.out.println("INITIALIZING SESSION STARTING AT " + session_start + " which will end " + session_end + "with length  " + preordained_session_length);
+
+        session_length += 1;
+
+//        preordained_session_length = random_object.nextGaussian() * length_deviation + driver.getAverage_shift_length();
 //        System.out.println("THE PREORDAINED LENGTH " + preordained_session_length);
     }
 
@@ -42,48 +55,52 @@ public class DrivingSession {
         return driver;
     }
 
-    public void increment_session_length() {
-         session_length += 1;
+    public void increment_session_length(){
+        session_length += 1;
     }
 
-    public Integer getSession_length() {
+    public int getSession_length() {
         return session_length;
     }
 
-    private double probabilityThatSessionEnds(){
-        /*
-        This method retuns the CDF probability of a session ending at this time step
-         */
-        NormalDistribution normalDistribution = new NormalDistribution(driver.getAverage_shift_length(), length_deviation);
-        return normalDistribution.cumulativeProbability(session_length);
+    public int getSession_start() {
+        return session_start;
     }
 
-    public boolean verifySessionEnding(){
-        System.out.println("VERIFYING SESSION with PREDORDAINED SESSION LENGTH " + preordained_session_length ) ;
-        System.out.println("VERIFYING SESSION with session_length  " + session_length ) ;
+    public int getSession_end() {
+        return session_end;
+    }
 
-        if(session_length >= preordained_session_length){
-            System.out.println("THE SESSION IS ENDING ");
+//    public boolean verifySessionEnding(int iteration){
+//        return iteration >= session_end;
+//    }
+
+    public String getSessionid() {
+        return sessionid;
+    }
+
+
+    //    private double probabilityThatSessionEnds(){
+//        /*
+//        This method retuns the CDF probability of a session ending at this time step
+//         */
+//        NormalDistribution normalDistribution = new NormalDistribution(driver.getAverage_shift_length(), length_deviation);
+//        return normalDistribution.cumulativeProbability(session_length);
+//    }
+//
+    public boolean verifySessionEnding(int iteration){
+//        System.out.println("Iteration " +  iteration + " VERIFYING SESSION which has length " + session_length + " and will end at  " + session_end ) ;
+
+//
+        if(iteration >= session_end) {
+//            System.out.println("THE SESSION IS ENDING ");
             return true;
-        }else{
-            System.out.println("THE SESSION IS NOT ENDING ");
         }
+//        }else{
+////            System.out.println("THE SESSION IS NOT ENDING ");
+//        }
 
         return false;
-
-
-
-        //        System.out.println("THE LENGTH OF THE SESSION IS " + session_length);
-//        System.out.println(driver.getAverage_shift_length());
-//        System.out.println("AVERAGE TRIP LENGTH " + driver.getAverage_shift_length());
-//        System.out.println("THE probability that the session is ending is " + probabilityThatSessionEnds());
-//
-//
-//        /*
-//        This method returns true if the session is ending, false if not
-//         */
-
-
 
     }
 
