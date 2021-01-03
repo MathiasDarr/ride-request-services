@@ -21,18 +21,18 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.*;
-import java.util.concurrent.Phaser;
+
 
 public class EventProducer {
 
-    public EventProducer(){
-
-    }
-
     public static void main(String[] args) throws Exception {
-        populate_user_ride_requests();
+        populateRides();
 
     }
+
+
+
+
 
     public static void populate_drivers() throws InterruptedException {
         final Map<String, String> serdeConfig = Collections.singletonMap(
@@ -84,11 +84,8 @@ public class EventProducer {
                 if(session.verifySessionEnding(iteration)){
                     Driver driver = session.getDriver();
                     inactive_drivers.add(driver);
-
                     DataService.insertSession( session.getSessionid() ,driver.getDriverid(), session.getSession_length(), session.getSession_start(), iteration);
-
                     System.out.println("SESSION WITH DRIVER " + driver.getFirst_name() + " " + driver.getLast_name() + " HAS ENDED AT LENGTH " + session.getSession_length());
-
                     drivingSessionIterator.remove();
                     active_drivers.remove(driver);
                 }else{
@@ -110,50 +107,20 @@ public class EventProducer {
 
 
     public static void populateRides() throws Exception{
-
-        final Map<String, String> serdeConfig = Collections.singletonMap(
-                AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
-        // Set serializers and
-        final SpecificAvroSerializer<AvroRide> purchaseEventSerializer = new SpecificAvroSerializer<>();
-        purchaseEventSerializer.configure(serdeConfig, false);
-
-        Map<String, Object> props = new HashMap<>();
-        props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ProducerConfig.RETRIES_CONFIG, 0);
-        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
-        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
-        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, purchaseEventSerializer.getClass());
-
-        DefaultKafkaProducerFactory<String, AvroRide> pf1 = new DefaultKafkaProducerFactory<>(props);
-        KafkaTemplate<String, AvroRide> rideRequestKafkaTemplate = new KafkaTemplate<>(pf1, true);
+        System.out.println("I AWDFDF");
+        KafkaGenericTemplate<AvroRide> kafkaGenericTemplate = new KafkaGenericTemplate<AvroRide>();
+        KafkaTemplate<String, AvroRide> rideRequestKafkaTemplate = kafkaGenericTemplate.getKafkaTemplate();
         rideRequestKafkaTemplate.setDefaultTopic(Constants.RIDE_REQUEST_TOPIC);
 
         AvroRide avroRide = new AvroRide("ride1","user1","driver1");
         rideRequestKafkaTemplate.sendDefault(avroRide);
+        System.out.println("SENT " + avroRide);
 
     }
 
 
     public static void populate_user_ride_requests() throws InterruptedException {
 
-        final Map<String, String> serdeConfig = Collections.singletonMap(
-                AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
-        // Set serializers and
-        final SpecificAvroSerializer<AvroRideRequest> purchaseEventSerializer = new SpecificAvroSerializer<>();
-        purchaseEventSerializer.configure(serdeConfig, false);
-
-        Map<String, Object> props = new HashMap<>();
-        props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ProducerConfig.RETRIES_CONFIG, 0);
-        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
-        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
-        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, purchaseEventSerializer.getClass());
 
         int iteration = 0;
 
