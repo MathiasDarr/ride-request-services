@@ -4,7 +4,7 @@
       
       <v-row>
         <v-col cols="3" sm="3">
-          <v-btn color="primary" v-on:click="ride_matching_socket_connect()">
+          <v-btn color="primary" v-on:click="await_connection()">
             Connect
           </v-btn>
         </v-col>
@@ -23,31 +23,6 @@
       </v-row>
 
     </v-card>
-
-      <div class="row">
-        <div class="col-md-6">
-          <form class="form-inline">
-            <div class="form-group">
-              <label for="connect">WebSocket connection:</label>
-              
-              <button
-                id="connect"
-                class="btn btn-default"
-                type="submit"
-                :disabled="connected == true"
-                @click.prevent="connect">Connect</button>
-              <button
-                id="disconnect"
-                class="btn btn-default"
-                type="submit"
-                :disabled="connected == false"
-                @click.prevent="disconnect"
-              >Disconnect
-              </button>
-            </div>
-          </form>
-        </div>
-        </div>
 
 
         <v-card  tile flat>
@@ -88,6 +63,8 @@ import Stomp from "webstomp-client";
 import RideRequest from './RideRequest'
 import { mapGetters, mapActions } from "vuex";
 
+import axios from 'axios';
+
 export default {
 
   methods: {
@@ -106,6 +83,41 @@ export default {
     send_ride_request(){
 
     },
+
+
+
+
+    async establish_connection(){
+            try{
+                //var url = window.__runtime_configuration.apiEndpoint + '/categories'
+                var url ='http://localhost:8080/rides/requests'
+                const response = await axios.put(url, {userid:'jerryjones', riders:2, destination:"San Juan", city:"San Fransansico"})            
+                
+                console.log(response)                
+
+
+                // var response_articles = JSON.parse(response.data.body)
+                // // this.setArticles(response_articles.articles)
+                // console.log(response_articles.articles)
+                // this.articles = response_articles.articles
+            }catch(err){
+                console.log(err)
+            }
+        },
+
+    async await_connection(){
+        await this.establish_connection()
+          
+    },
+
+
+
+
+
+
+    // establish_connection(){
+    //   axios.put()
+    // },
 
 
     ride_matching_socket_connect(){

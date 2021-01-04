@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-import axios from 'axios';
 
 const state = {
     destination:'',
