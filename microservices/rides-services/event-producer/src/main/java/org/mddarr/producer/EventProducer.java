@@ -27,7 +27,9 @@ import java.util.*;
 public class EventProducer {
 
     public static void main(String[] args) throws Exception {
-        populateRides();
+//        populateRides();
+        populateRideRequests();
+
     }
 
     public static void populate_drivers() throws InterruptedException {
@@ -127,7 +129,6 @@ public class EventProducer {
         while(true) {
 
             List<User> requesting_users = new ArrayList<>();
-
             // Select  the drivers from the inactive pool to activate sessions
             for (User user : available_users) {
                 double probablity = random_object.nextDouble();
@@ -135,7 +136,6 @@ public class EventProducer {
                     requesting_users.add(user);
                 }
             }
-
             Iterator<User> availableUserIterator = users.iterator();
 
             while (availableUserIterator.hasNext()) {
@@ -151,44 +151,23 @@ public class EventProducer {
             }
             iteration += 1;
             Thread.sleep(200);
-
         }
-
     }
 
-//    public static void populateRideRequests() throws Exception{
-//        final Map<String, String> serdeConfig = Collections.singletonMap(
-//                AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
-//        // Set serializers and
-//        final SpecificAvroSerializer<AvroRideRequest> purchaseEventSerializer = new SpecificAvroSerializer<>();
-//        purchaseEventSerializer.configure(serdeConfig, false);
-//
-//        Map<String, Object> props = new HashMap<>();
-//        props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
-//        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-//        props.put(ProducerConfig.RETRIES_CONFIG, 0);
-//        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
-//        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
-//        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
-//        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-//        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, purchaseEventSerializer.getClass());
-//
-//
-//        DefaultKafkaProducerFactory<String, AvroRideRequest> pf1 = new DefaultKafkaProducerFactory<>(props);
-//        KafkaTemplate<String, AvroRideRequest> rideRequestKafkaTemplate = new KafkaTemplate<>(pf1, true);
-//
-//
-//
-//        rideRequestKafkaTemplate.setDefaultTopic(Constants.RIDE_REQUEST_TOPIC);
-//
-//        List<AvroRideRequest> rideRequests = DataService.getRideRequestsFromDB();
-//
-//        rideRequests.forEach(rideRequest -> {
-//            System.out.println("Writing ride request for '" + rideRequest.getRequestId() + "' to input topic " +
-//                    Constants.RIDE_REQUEST_TOPIC);
-//            rideRequestKafkaTemplate.sendDefault(rideRequest);
-//        });
-//    }
+    public static void populateRideRequests() throws Exception {
+
+        KafkaGenericTemplate<AvroRideRequest> kafkaGenericTemplate = new KafkaGenericTemplate<>();
+        KafkaTemplate<String, AvroRideRequest> rideRequestKafkaTemplate = kafkaGenericTemplate.getKafkaTemplate();
+        rideRequestKafkaTemplate.setDefaultTopic(Constants.RIDE_REQUEST_TOPIC);
+
+
+        AvroRideRequest rideRequest = new AvroRideRequest("requestid1", "user1", 3);
+        rideRequestKafkaTemplate.sendDefault(rideRequest);
+
+        System.out.println("Writing ride request for '" + rideRequest.getRequestId() + "' to input topic " + Constants.RIDE_REQUEST_TOPIC);
+
+
+    }
 
 
     public static void populateDrivers() throws Exception{

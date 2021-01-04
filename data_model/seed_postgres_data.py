@@ -26,10 +26,17 @@ def populate_users_table():
 
         reader = csv.DictReader(csvfile)
         i = 0
-        for row in reader:
-            i += 1
-            cur.execute(insert_into_users_table, [row['userid'], row['first_name'], row["last_name"], row['email'], row['password'], row['phone_number'], row['city']])
-        conn.commit()
+        try:
+            for row in reader:
+                i += 1
+                cur.execute(insert_into_users_table,
+                            [row['userid'], row['first_name'], row["last_name"], row['email'], row['password'],
+                             row['phone_number'], row['city']])
+
+            conn.commit()
+        except Exception as e:
+            print(e)
+            conn.commit()
 
 
 def populate_drivers_table():
@@ -146,6 +153,6 @@ if __name__ =='__main__':
     populate_drivers_table()
     populate_users_table()
     populate_ride_requests_table()
-    populate_rides_table()
-    create_sessions_table()
+    # populate_rides_table()
+    # create_sessions_table()
     print("THE POSTGRES DATABASE HAS BEEN SEEDED.")

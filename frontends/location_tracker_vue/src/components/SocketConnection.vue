@@ -118,10 +118,12 @@ export default {
           this.connected = true;
           console.log(frame);
           this.stompClient.subscribe("/topic/rides/requests", tick => {
-          console.log(tick);
+          var request = JSON.parse(tick.body)
 
+          console.log(request);
 
-            // this.received_ride_requests.push(JSON.parse(tick.body));
+          console.log(request.userid)
+            this.received_ride_requests.push(JSON.parse(tick.body));
           });
         },
         error => {

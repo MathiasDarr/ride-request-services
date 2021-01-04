@@ -1,7 +1,7 @@
 package org.mddarr.socket.service.controller;
 
 
-import org.mddarr.socket.service.model.RideRequest;
+import org.mddarr.socket.service.model.requests.RideRequest;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;

@@ -1,4 +1,4 @@
-package org.mddarr.socket.service.model;
+package org.mddarr.socket.service.model.requests;
 
 public class RideRequest {
 	private String userid;
