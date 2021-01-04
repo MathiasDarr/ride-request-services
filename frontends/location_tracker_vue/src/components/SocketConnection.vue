@@ -97,22 +97,23 @@ export default {
                 var url ='http://localhost:8080/rides/requests'
                 const response = await axios.put(url, {userid:'jerryjones', riders:2, destination:"San Juan", city:"San Fransansico"})                        
                 
-                this.setRequestID(response.data)
-                // this.setRequestID({requestid:response.data})            
+                this.setRequestID(response.data)     
+                return true;
             }catch(err){
                 console.log(err)
+                return false;
             }
         },
 
     async await_connection(){
-        await this.establish_connection()
-        // this.ride_matching_socket_connect()
+        if(await this.establish_connection()){
+          this.ride_matching_socket_connect()  
+        }
+        else{
+          console.log("UNABLE TO PLACE RIDE REQUEST")
+        }
+        
     },
-
-
-
-
-
 
     // establish_connection(){
     //   axios.put()

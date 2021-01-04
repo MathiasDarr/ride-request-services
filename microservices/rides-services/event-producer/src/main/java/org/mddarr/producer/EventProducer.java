@@ -1,5 +1,6 @@
 package org.mddarr.producer;
 
+import org.mddarr.producer.kafka.generictemplate.KafkaGenericTemplate;
 import org.mddarr.producer.models.Driver;
 import org.mddarr.producer.models.DrivingSession;
 import org.mddarr.producer.models.RideRequestSession;
@@ -27,7 +28,9 @@ import java.util.*;
 public class EventProducer {
 
     public static void main(String[] args) throws Exception {
-//        populateRides();
+        populateRides();
+//        populateRideRequests();
+
         populateRideRequests();
 
     }
@@ -160,15 +163,11 @@ public class EventProducer {
         KafkaTemplate<String, AvroRideRequest> rideRequestKafkaTemplate = kafkaGenericTemplate.getKafkaTemplate();
         rideRequestKafkaTemplate.setDefaultTopic(Constants.RIDE_REQUEST_TOPIC);
 
-
         AvroRideRequest rideRequest = new AvroRideRequest("requestid1", "user1", 3, "Seattle","Ballard");
         rideRequestKafkaTemplate.sendDefault(rideRequest);
-
         System.out.println("Writing ride request for '" + rideRequest.getRequestId() + "' to input topic " + Constants.RIDE_REQUEST_TOPIC);
 
-
     }
-
 
     public static void populateDrivers() throws Exception{
 
@@ -185,38 +184,4 @@ public class EventProducer {
         });
     }
 
-    public static void populateCoordinates() throws Exception{
-        final Map<String, String> serdeConfig = Collections.singletonMap(
-                AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
-        // Set serializers and
-        final SpecificAvroSerializer<AvroDriver> purchaseEventSerializer = new SpecificAvroSerializer<>();
-        purchaseEventSerializer.configure(serdeConfig, false);
-
-        Map<String, Object> props = new HashMap<>();
-        props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ProducerConfig.RETRIES_CONFIG, 0);
-        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
-        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
-        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, purchaseEventSerializer.getClass());
-
-
-        DefaultKafkaProducerFactory<String, AvroRideCoordinate> pf1 = new DefaultKafkaProducerFactory<>(props);
-        KafkaTemplate<String, AvroRideCoordinate> driverKafkaTemplate = new KafkaTemplate<>(pf1, true);
-        driverKafkaTemplate.setDefaultTopic(Constants.COORDINATES_TOPIC);
-
-        while(true){
-            AvroRideCoordinate avroRideCoordinate = new AvroRideCoordinate("ride1", 12.1, 12.0);
-            driverKafkaTemplate.sendDefault(avroRideCoordinate);
-            System.out.println("Writing ride coordinate for '" + avroRideCoordinate.getRideid() + "' to input topic " + Constants.COORDINATES_TOPIC);
-            Thread.sleep(3000);
-
-            avroRideCoordinate = new AvroRideCoordinate("ride2", 12.1, 12.0);
-            driverKafkaTemplate.sendDefault(avroRideCoordinate);
-            System.out.println("Writing ride coordinate for '" + avroRideCoordinate.getRideid() + "' to input topic " + Constants.COORDINATES_TOPIC);
-            Thread.sleep(3000);
-        }
-    }
 }

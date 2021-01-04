@@ -1,16 +1,11 @@
 server.port: 8080
 
-#spring.cloud.stream:
-#  function:
-#    definition: process_rides;process_ride_requests;
-#
-#spring.cloud.stream.bindings.process_rides-in-0:
-#  destination: rides
-#
-#spring.cloud.stream.bindings.process_ride_requests-in-0:
-#  destination: ride-requests
+spring.cloud.stream:
+  function:
+    definition: process_rides;
 
-
+spring.cloud.stream.bindings.process_rides-in-0:
+  destination: rides
 
 spring.cloud.stream.kafka.streams.binder:
   brokers: localhost:9092
@@ -23,39 +18,61 @@ spring.cloud.stream.kafka.streams.binder.configuration:
   default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
   default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 
-spring:
-  kafka:
-    bootstrap-servers:
-      - localhost:9092
-    properties:
-      schema.registry.url: http://localhost:8081
-
-    consumer:
-      group-id: group_id
-      auto-offset-reset: latest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
-      properties:
-        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
-
-
-
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-      properties:
-        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor
-    template:
-      default-topic:
-
-
-
+#spring:
 #  kafka:
+#    bootstrap-servers:
+#      - localhost:9092
+#    properties:
+#      schema.registry.url: http://localhost:8081
 #    streams:
 #      binder:
-#        applicationId: hello-word-count-sample
+#        applicationId: socket-serivces-application
 #        configuration:
 #          commit.interval.ms: 100
 #          default:
 #            key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-#            value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+#            value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+#
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+##      properties:
+##        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor
+#    template:
+#      default-topic:
+
+
+#server.port: 8080
+#
+#spring.cloud.stream:
+#  function:
+#    definition: process_ride_requests;
+#spring.cloud.stream.bindings.process_ride_requests-in-0:
+#  destination: ride-requests
+#
+#
+#
+#spring.cloud.stream.kafka.streams.binder:
+#  brokers: localhost:9092
+#  configuration:
+#    schema.registry.url: http://localhost:8081
+#    commit.interval.ms: 1000
+#
+#
+#spring.cloud.stream.kafka.streams.binder.configuration:
+#  default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+#  default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+#
+
+
+#    consumer:
+#      group-id: group_id
+#      auto-offset-reset: latest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+#      properties:
+#        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
+
+
+
+

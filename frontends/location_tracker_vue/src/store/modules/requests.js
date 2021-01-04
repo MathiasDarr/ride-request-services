@@ -6,7 +6,7 @@ const state = {
     nriders:'',
     requests: [{rideid:"ride1",user_name:"charles", driver_name:"edward", riders: 3, destination: "131 3rd Ave"}],
     rides:[],
-    requestid:String
+    requestid:''
 };
 
 const getters = {

@@ -1,4 +1,4 @@
-package org.mddarr.producer;
+package org.mddarr.producer.kafka.generictemplate;
 
 import org.springframework.kafka.core.KafkaTemplate;
 

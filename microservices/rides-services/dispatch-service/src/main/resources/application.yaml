@@ -9,20 +9,24 @@ spring.cloud.stream:
 #      process-out-0:
 #        destination: requests-out
   function:
-    definition: process;process_drivers;
+    definition: process_rides;process_drivers,process_ride_requests;
 
 
 
-spring.cloud.stream.bindings.process-in-0:
+spring.cloud.stream.bindings.process_ride_requests-in-0:
   destination: ride-requests
-spring.cloud.stream.bindings.process-out-0:
-  destination: requests-out
+spring.cloud.stream.bindings.process_ride_requests-out-0:
+  destination: ride-requests-out
 
 spring.cloud.stream.bindings.process_drivers-in-0:
   destination: drivers
 spring.cloud.stream.bindings.process_drivers-out-0:
   destination: drivers-out
 
+spring.cloud.stream.bindings.process_rides-in-0:
+  destination: rides
+spring.cloud.stream.bindings.process_rides-out-0:
+  destination: rides-out
 
 
 spring.cloud.stream.kafka.streams.binder:

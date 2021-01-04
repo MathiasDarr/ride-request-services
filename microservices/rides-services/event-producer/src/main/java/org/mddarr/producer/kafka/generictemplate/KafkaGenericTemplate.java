@@ -1,12 +1,10 @@
-package org.mddarr.producer;
+package org.mddarr.producer.kafka.generictemplate;
 
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerializer;
 import org.apache.avro.specific.SpecificRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.mddarr.rides.event.dto.AvroRide;
-import org.mddarr.rides.event.dto.AvroRideRequest;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 

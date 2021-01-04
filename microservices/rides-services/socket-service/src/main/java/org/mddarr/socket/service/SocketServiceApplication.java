@@ -42,14 +42,17 @@ public class SocketServiceApplication {
 //	@Bean
 //	public Consumer<KStream<String, AvroRide>> process_rides() {
 //		return (rideRequestStream) -> {
-//			rideRequestStream.foreach((key, value) -> System.out.println("THE KEY IS AND THE VLAUE IS " + key + " " + value));
-//			Ride ride = new Ride("rideid1", "Charles Driver", "Eric User");
-//			template.convertAndSend("/topic/rides", ride);
+//			rideRequestStream.foreach((key, ride) -> {
+//				System.out.println("THE KEY IS AND THE VLAUE IS " + key + " " + ride);
+//				template.convertAndSend("/topic/rides/requests/alert", ride);
+//			});
 //		};
 //	}
 
+
+
 //	@Bean
-//	public Consumer<KStream<String, AvroRideRequest>> process_ride_requests() {
+//	public Consumer<KStream<String, AvroRide>> process_ride() {
 //		return (rideRequestStream) -> {
 //			rideRequestStream.foreach((key, value) -> {
 //				System.out.println("THE KEY IS AND THE VLAUE IS " + key + " " + value);
