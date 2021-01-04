@@ -24,6 +24,10 @@
 
     </v-card>
 
+    THe request ID is {{ getRequestID }}
+
+
+
 
         <v-card  tile flat>
           <div>
@@ -67,10 +71,12 @@ import axios from 'axios';
 
 export default {
 
+  computed:{
+    ...mapGetters(["getRequestID"])
+  },
+
   methods: {
-
-    ...mapActions(["addRequest"]),
-
+    ...mapActions(["addRequest", "setRequestID"]),
     send() {
       console.log("Send message:" + this.send_message);
       if (this.stompClient && this.stompClient.connected) {  
@@ -85,21 +91,14 @@ export default {
     },
 
 
-
-
     async establish_connection(){
             try{
                 //var url = window.__runtime_configuration.apiEndpoint + '/categories'
                 var url ='http://localhost:8080/rides/requests'
-                const response = await axios.put(url, {userid:'jerryjones', riders:2, destination:"San Juan", city:"San Fransansico"})            
+                const response = await axios.put(url, {userid:'jerryjones', riders:2, destination:"San Juan", city:"San Fransansico"})                        
                 
-                console.log(response)                
-
-
-                // var response_articles = JSON.parse(response.data.body)
-                // // this.setArticles(response_articles.articles)
-                // console.log(response_articles.articles)
-                // this.articles = response_articles.articles
+                this.setRequestID(response.data)
+                // this.setRequestID({requestid:response.data})            
             }catch(err){
                 console.log(err)
             }
@@ -107,7 +106,7 @@ export default {
 
     async await_connection(){
         await this.establish_connection()
-          
+        // this.ride_matching_socket_connect()
     },
 
 
@@ -122,7 +121,9 @@ export default {
 
     ride_matching_socket_connect(){
       this.socket = new SockJS("http://localhost:8080/ride-request-websocket");
+      
       this.stompClient = Stomp.over(this.socket);
+      
       this.stompClient.connect(
         {},
         frame => {
@@ -132,7 +133,7 @@ export default {
           var request = JSON.parse(tick.body)
           console.log(request);
           console.log(request.userid)
-            this.received_ride_requests.push(JSON.parse(tick.body));
+            // this.received_ride_requests.push(JSON.parse(tick.body));
           });
         },
         error => {
@@ -168,6 +169,7 @@ export default {
       received_ride_requests: [],
       ride_requested: null,
       connected: false,
+
 
     }
   },
