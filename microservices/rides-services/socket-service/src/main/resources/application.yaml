@@ -1,14 +1,14 @@
 server.port: 8080
 
-spring.cloud.stream:
-  function:
-    definition: process_rides;process_ride_requests;
-
-spring.cloud.stream.bindings.process_rides-in-0:
-  destination: rides
-
-spring.cloud.stream.bindings.process_ride_requests-in-0:
-  destination: ride-requests
+#spring.cloud.stream:
+#  function:
+#    definition: process_rides;process_ride_requests;
+#
+#spring.cloud.stream.bindings.process_rides-in-0:
+#  destination: rides
+#
+#spring.cloud.stream.bindings.process_ride_requests-in-0:
+#  destination: ride-requests
 
 
 
@@ -29,6 +29,17 @@ spring:
       - localhost:9092
     properties:
       schema.registry.url: http://localhost:8081
+
+    consumer:
+      group-id: group_id
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
+
+
+
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer

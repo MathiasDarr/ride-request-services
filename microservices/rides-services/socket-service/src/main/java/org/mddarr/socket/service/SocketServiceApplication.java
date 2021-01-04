@@ -39,27 +39,27 @@ public class SocketServiceApplication {
 //	}
 //
 
-	@Bean
-	public Consumer<KStream<String, AvroRide>> process_rides() {
-		return (rideRequestStream) -> {
-			rideRequestStream.foreach((key, value) -> System.out.println("THE KEY IS AND THE VLAUE IS " + key + " " + value));
-			Ride ride = new Ride("rideid1", "Charles Driver", "Eric User");
-			template.convertAndSend("/topic/rides", ride);
-		};
-	}
+//	@Bean
+//	public Consumer<KStream<String, AvroRide>> process_rides() {
+//		return (rideRequestStream) -> {
+//			rideRequestStream.foreach((key, value) -> System.out.println("THE KEY IS AND THE VLAUE IS " + key + " " + value));
+//			Ride ride = new Ride("rideid1", "Charles Driver", "Eric User");
+//			template.convertAndSend("/topic/rides", ride);
+//		};
+//	}
 
-	@Bean
-	public Consumer<KStream<String, AvroRideRequest>> process_ride_requests() {
-		return (rideRequestStream) -> {
-			rideRequestStream.foreach((key, value) -> {
-				System.out.println("THE KEY IS AND THE VLAUE IS " + key + " " + value);
-				System.out.println("GETADF");
-				RideRequestResponse rideRequestResponse = new RideRequestResponse();
-				template.convertAndSend("/topic/rides/requests/alert", rideRequestResponse);
-			});
-
-		};
-	}
+//	@Bean
+//	public Consumer<KStream<String, AvroRideRequest>> process_ride_requests() {
+//		return (rideRequestStream) -> {
+//			rideRequestStream.foreach((key, value) -> {
+//				System.out.println("THE KEY IS AND THE VLAUE IS " + key + " " + value);
+//				System.out.println("GETADF");
+//				RideRequestResponse rideRequestResponse = new RideRequestResponse();
+//				template.convertAndSend("/topic/rides/requests/alert", rideRequestResponse);
+//			});
+//
+//		};
+//	}
 
 
 }

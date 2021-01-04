@@ -1,40 +1,17 @@
-package org.mddarr.socket.service.controller;
-
+package org.mddarr.rides.request.service.controllers;
 
 import org.mddarr.rides.event.dto.AvroRideRequest;
-import org.mddarr.socket.service.model.requests.RideRequest;
-
-import org.mddarr.socket.service.model.responses.RideRequestResponse;
-import org.mddarr.socket.service.services.AvroRideRequestProducer;
+import org.mddarr.rides.request.service.models.RideRequestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-@Controller
-public class RideRequestController {
-
-    @Autowired
-    private SimpMessagingTemplate template;
-
-//    @PutMapping("rides/request")
-
-    @Autowired
-    private AvroRideRequestProducer avroRideRequestProducer;
-
-
-    @PutMapping("rides/requests")
-    @CrossOrigin(origins = "http://localhost:8091")
-    public String postRideRequest(@RequestBody RideRequest rideRequest){
-        return avroRideRequestProducer.sendRideRequest(rideRequest);
-    }
-
+public class RideRequestSocketController {
 
     @MessageMapping("/rides/requests/alert")
     @SendTo("/topic/rides/requests/alert")
@@ -47,15 +24,5 @@ public class RideRequestController {
         return rideRequestResponse;
     }
 
-    @MessageMapping("/rides/requests/post")
-    @SendTo("/topic/rides/requests/post")
-    public String sendRideRequest(RideRequest rideRequest) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        //System.out.println("string " + rideRequest);
-        String requestid = avroRideRequestProducer.sendRideRequest(rideRequest);
-//        return rideRequest;
-        return requestid;
-    }
-//
 
 }
