@@ -1,7 +1,0 @@
-spring.cloud:
-    stream:
-      bindings:
-        uppercase|echo-in-0:
-          destination: uppercase-in
-      function:
-        definition: uppercase|echo

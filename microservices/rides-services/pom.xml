@@ -17,6 +17,8 @@
     <version>1.0-SNAPSHOT</version>
     
     <modules>
+        <module>socket-dispatch-service</module>
+<!--        <module>dispatch-service</module>-->
 <!--        <module>ride-request-service</module>-->
 <!--        <module>socket-service</module>-->
 <!--        <module>stomp-sockets</module>-->
@@ -26,8 +28,8 @@
 <!--        <module>dispatch-service</module>-->
 <!--        <module>drivers-service</module>-->
 <!--        <module>ride-request-service</module>-->
-        <module>dispatch-service</module>
-        <module>event-producer</module>
+<!--        <module>dispatch-service</module>-->
+<!--        <module>event-producer</module>-->
 <!--        <module>socket-service</module>-->
         <module>avro-schema</module>
     </modules>
