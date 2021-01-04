@@ -4,6 +4,8 @@
  "fields": [
      {"name": "request_id", "type": "string"},
      {"name": "user_id", "type": "string"},
-     {"name": "riders",  "type": "int"}
+     {"name": "riders",  "type": "int"},
+     {"name": "city",  "type": "string"},
+      {"name": "destination",  "type": "string"}
  ]
 }

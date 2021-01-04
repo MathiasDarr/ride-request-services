@@ -35,7 +35,6 @@ public class RideReceiverApplication {
 		return (rideRequestStream) -> {
 			rideRequestStream.foreach((key, value) -> System.out.println("THE KEY IS AND THE VLAUE IS " + key + " " + value));
 			return rideRequestStream;
-
 		};
 	}
 

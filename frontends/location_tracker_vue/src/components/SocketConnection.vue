@@ -96,18 +96,17 @@ export default {
 
     send() {
       console.log("Send message:" + this.send_message);
-      if (this.stompClient && this.stompClient.connected) {
-        // const coordinates = {lat:12.1, lng:39.1}
-        // JSON.stringify(coordinates)
-        var request = {userid:"charles",riders:2,destination:"church" }
-        
-        // var request = {content:"hi", sender:"dfa"}
-        
-        var request = {userid:"charles",riders:2,destination:"church" }
+      if (this.stompClient && this.stompClient.connected) {  
+        var request = {userid:"charles",riders:2,destination:"church",city: "Seattle" }
         var request_body = JSON.stringify(request)
-        this.stompClient.send("/app/rides/requests", request_body, {});
+        this.stompClient.send("/app/rides/requests/post", request_body, {});
       }
     },
+
+    send_ride_request(){
+
+    },
+
 
     ride_matching_socket_connect(){
       this.socket = new SockJS("http://localhost:8080/ride-request-websocket");

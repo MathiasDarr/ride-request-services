@@ -161,7 +161,7 @@ public class EventProducer {
         rideRequestKafkaTemplate.setDefaultTopic(Constants.RIDE_REQUEST_TOPIC);
 
 
-        AvroRideRequest rideRequest = new AvroRideRequest("requestid1", "user1", 3);
+        AvroRideRequest rideRequest = new AvroRideRequest("requestid1", "user1", 3, "Seattle","Ballard");
         rideRequestKafkaTemplate.sendDefault(rideRequest);
 
         System.out.println("Writing ride request for '" + rideRequest.getRequestId() + "' to input topic " + Constants.RIDE_REQUEST_TOPIC);

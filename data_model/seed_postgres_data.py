@@ -132,7 +132,9 @@ def populate_ride_requests_table():
                     request_id VARCHAR(50) PRIMARY KEY,
                     userid VARCHAR(50) REFERENCES users(userid),
                     request_time VARCHAR(30),
-                    riders INTEGER
+                    riders INTEGER,
+                    city String,
+                    destination,
             );
     """
     cur.execute(create_users_table)

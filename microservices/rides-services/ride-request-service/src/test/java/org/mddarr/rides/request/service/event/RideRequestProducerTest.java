@@ -22,7 +22,7 @@ public class RideRequestProducerTest extends UatAbstractTest {
 
     @Test
     public void should_send_ride_request() {
-        avroRideRequestProducer.sendRideRequest(new RideRequest("Charles",6));
+        avroRideRequestProducer.sendRideRequest(new RideRequest("Charles",6, "Seattle", "Ballard"));
         ConsumerRecord<String, AvroRideRequest> singleRecord = KafkaTestUtils.getSingleRecord(event1Consumer, Constants.Rides_TOPIC);
         assertThat(singleRecord).isNotNull();
     }

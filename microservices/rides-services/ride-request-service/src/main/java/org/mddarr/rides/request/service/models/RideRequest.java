@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RideRequest {
     private String userid;
-    private Integer riders;
+    private int riders;
+    private String destination;
+    private String city;
 
     public String getUserid() {
         return userid;
@@ -18,11 +20,27 @@ public class RideRequest {
         this.userid = userid;
     }
 
-    public Integer getRiders() {
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public int getRiders() {
         return riders;
     }
 
-    public void setRiders(Integer riders) {
+    public void setRiders(int riders) {
         this.riders = riders;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

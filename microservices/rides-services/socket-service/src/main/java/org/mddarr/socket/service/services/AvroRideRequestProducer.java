@@ -1,9 +1,10 @@
-package org.mddarr.rides.request.service.services;
+package org.mddarr.socket.service.services;
 
 import org.mddarr.rides.event.dto.AvroRideRequest;
-import org.mddarr.rides.request.service.models.RideRequest;
-import org.mddarr.rides.request.service.Constants;
 
+
+import org.mddarr.socket.service.Constants;
+import org.mddarr.socket.service.model.requests.RideRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,15 @@ public class AvroRideRequestProducer implements AvroRideRequestInterface{
     @Override
     public String sendRideRequest(RideRequest rideRequest) {
         String request_id = UUID.randomUUID().toString();
-        AvroRideRequest ride = AvroRideRequest.newBuilder()
+        AvroRideRequest avroRideRequest = AvroRideRequest.newBuilder()
                 .setRequestId(request_id)
                 .setUserId(rideRequest.getUserid())
-                .setDestination(rideRequest.getDestination())
                 .setCity(rideRequest.getCity())
+                .setDestination(rideRequest.getDestination())
                 .setRiders(rideRequest.getRiders()).build();
-
-        logger.info("Send event 1 {}", ride);
-        kafkaTemplateEvent1.send(Constants.Rides_TOPIC, ride);
+        System.out.println("Send ride request  {}" +  rideRequest.getDestination());
+        logger.info("Send ride request  {}", avroRideRequest.getCity());
+        kafkaTemplateEvent1.send(Constants.RIDE_REQUEST_TOPIC, avroRideRequest);
         return request_id;
     }
 
