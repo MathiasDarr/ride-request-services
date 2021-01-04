@@ -1,9 +1,19 @@
 package org.mddarr.socket.service.model.responses;
 
+
 public class RideRequestResponse {
+    private String requestid;
     private String userid;
     private String destination;
     private int riders;
+
+    public String getRideid() {
+        return requestid;
+    }
+
+    public void setRideid(String rideid) {
+        this.requestid = rideid;
+    }
 
     public String getUserid() {
         return userid;

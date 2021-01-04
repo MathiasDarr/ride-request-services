@@ -5,6 +5,8 @@ import org.mddarr.rides.event.dto.AvroRide;
 import org.mddarr.rides.event.dto.AvroRideRequest;
 import org.mddarr.socket.service.model.CoordinatesResponse;
 import org.mddarr.socket.service.model.Ride;
+import org.mddarr.socket.service.model.requests.RideRequest;
+import org.mddarr.socket.service.model.responses.RideRequestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -52,9 +54,10 @@ public class SocketServiceApplication {
 			rideRequestStream.foreach((key, value) -> {
 				System.out.println("THE KEY IS AND THE VLAUE IS " + key + " " + value);
 				System.out.println("GETADF");
+				RideRequestResponse rideRequestResponse = new RideRequestResponse();
+				template.convertAndSend("/topic/rides/requests/alert", rideRequestResponse);
 			});
-			Ride ride = new Ride("rideid1", "Charles Driver", "Eric User");
-			template.convertAndSend("/topic/rides", ride);
+
 		};
 	}
 

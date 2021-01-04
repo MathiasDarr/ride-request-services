@@ -117,11 +117,9 @@ export default {
         frame => {
           this.connected = true;
           console.log(frame);
-          this.stompClient.subscribe("/topic/rides/requests", tick => {
+          this.stompClient.subscribe("/topic/rides/requests/alert", tick => {
           var request = JSON.parse(tick.body)
-
           console.log(request);
-
           console.log(request.userid)
             this.received_ride_requests.push(JSON.parse(tick.body));
           });
