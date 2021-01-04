@@ -12,9 +12,11 @@ public class RideDispatchController {
 
     @MessageMapping("/rides")
     @SendTo("/topic/rides")
-    public Ride sendMatchedRide() throws Exception {
+    public Ride sendMatchedRide(String payloadString) throws Exception {
         Thread.sleep(1000); // simulated delay
+
         Ride ride = new Ride("ride1", "driver1", "user1");
+        System.out.println("I GET HIT " + payloadString);
         return ride;
     }
 

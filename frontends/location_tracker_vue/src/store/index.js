@@ -1,7 +1,7 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 
-import snotel from './modules/snotel'
+import requests from './modules/requests'
 
 // Load Vuex
 Vue.use(Vuex);
@@ -9,6 +9,6 @@ Vue.use(Vuex);
 // Create store
 export default new Vuex.Store({
   modules: {
-    snotel,
+    requests,
   }
 });

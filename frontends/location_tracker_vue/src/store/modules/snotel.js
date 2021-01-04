@@ -15,13 +15,6 @@ const state = {
 };
 
 const getters = {
-    // getLocations: state => state.locations,
-    // getQueryData: state => state.queryData,
-    // getWaterMedian: state => state.waterMedian,
-    // getWaterCurrent: state => state.waterCurrent,
-    // getSnowCurrent: state => state.snowCurrent,
-    // getSnowMedian: state => state.snowMedian,
-    // getParsedSnowCurrent: state => state.parsedSnowCurrent,
     getReducedSnowCurrent: state => state.reducedSnowCurrent,
     getReducedSnowMedian: state => state.reducedSnowMedian
   };
