@@ -3,12 +3,12 @@
     <v-card flat>
       
       <v-row>
-        <v-col cols="6" sm="3">
-          <v-btn color="primary" v-on:click="connect()">
+        <v-col cols="3" sm="3">
+          <v-btn color="primary" v-on:click="ride_matching_socket_connect()">
             Connect
           </v-btn>
         </v-col>
-        <v-col class="d-flex" cols="6"  sm="3">
+        <v-col class="d-flex" cols="3"  sm="3">
           <v-btn color="primary" v-on:click="connect()">
             Disconnect
           </v-btn>
@@ -17,10 +17,7 @@
 
     </v-card>
 
-
-
-
-      <!-- <div class="row">
+      <div class="row">
         <div class="col-md-6">
           <form class="form-inline">
             <div class="form-group">
@@ -44,6 +41,7 @@
           </form>
         </div>
 
+        
         <div class="col-md-6">
           <form class="form-inline">
             <div class="form-group">
@@ -52,7 +50,7 @@
                 type="text"
                 id="name"
                 class="form-control"
-                v-model="send_message"
+                v-model="ride_requested"
                 placeholder="Your name here..."
               >
             </div>
@@ -65,6 +63,10 @@
           </form>
         </div>
       </div>
+
+
+
+
 
               <v-card  tile flat>
                 <div>
@@ -96,9 +98,7 @@
                     </div>
                   </div>
                 </div>
-              </v-card> -->
-
-
+              </v-card>
   </v-container>
 </template>
 
@@ -107,12 +107,12 @@
 
 import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
-
+import RideRequest from './RideRequest'
 export default {
      data() {
     return {
       received_messages: [],
-      send_message: null,
+      ride_requested: null,
       connected: false
     };
   },
@@ -124,6 +124,27 @@ export default {
         this.stompClient.send("/app/coordinates", JSON.stringify(coordinates), {});
       }
     },
+
+    ride_matching_socket_connect(){
+      this.socket = new SockJS("http://localhost:8080/ride-request-websocket");
+      this.stompClient = Stomp.over(this.socket);
+      this.stompClient.connect(
+        {},
+        frame => {
+          this.connected = true;
+          console.log(frame);
+          this.stompClient.subscribe("/topic/rides", tick => {
+            console.log(tick);
+            // this.received_messages.push(JSON.parse(tick.body).content);
+          });
+        },
+        error => {
+          console.log(error);
+          this.connected = false;
+        }
+      );
+    },
+
     connect() {
       this.socket = new SockJS("http://localhost:8080/location-tracker-websocket");
       this.stompClient = Stomp.over(this.socket);
@@ -143,6 +164,8 @@ export default {
         }
       );
     },
+
+
     disconnect() {
       if (this.stompClient) {
         this.stompClient.disconnect();

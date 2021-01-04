@@ -1,6 +1,14 @@
 <template>
   <v-container>
-    <v-layout row>
+
+
+   <RideRequest />
+
+
+    <SocketConnection />
+    
+    
+    <!-- <v-layout row>
       <v-flex md2>
 
       </v-flex> 
@@ -8,32 +16,34 @@
         <div class="title font-weight-medium">
           <v-layout row>
             <v-flex md8>
-
               <SocketConnection />
-
             </v-flex>
-
             <v-flex md4>
-                
             </v-flex>
           </v-layout>
-        
         </div>
       </v-flex>
-    </v-layout> 
+    </v-layout>  -->
+
+
+
   </v-container>
 </template>
 
 <script>
-
+/* eslint-disable */
 
 import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
 import SocketConnection from './SocketConnection'
+import RideRequest from './RideRequest'
+
+
 
 export default {
   components:{
-    SocketConnection
+    SocketConnection,
+    RideRequest
   },
  data() {
     return {

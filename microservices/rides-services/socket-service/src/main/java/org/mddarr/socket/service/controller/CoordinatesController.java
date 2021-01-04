@@ -20,12 +20,6 @@ public class CoordinatesController {
 //        return new CoordinatesMessage(coordinatesMessage.getLat(), coordinatesMessage.getLng());
 //    }
 
-    @MessageMapping("/rides")
-    @SendTo("/topic/rides")
-    public Ride sendMatchedRide(@Payload Ride ride) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        return ride;
-    }
 
     @MessageMapping("/coordinates")
     @SendTo("/topic/coordinates")
