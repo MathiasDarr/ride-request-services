@@ -27,8 +27,7 @@ import java.util.*;
 public class EventProducer {
 
     public static void main(String[] args) throws Exception {
-        populateDrivers();
-
+        populateRides();
     }
 
     public static void populate_drivers() throws InterruptedException {
@@ -106,7 +105,7 @@ public class EventProducer {
     public static void populateRides() throws Exception{
         KafkaGenericTemplate<AvroRide> kafkaGenericTemplate = new KafkaGenericTemplate<AvroRide>();
         KafkaTemplate<String, AvroRide> rideRequestKafkaTemplate = kafkaGenericTemplate.getKafkaTemplate();
-        rideRequestKafkaTemplate.setDefaultTopic(Constants.RIDE_REQUEST_TOPIC);
+        rideRequestKafkaTemplate.setDefaultTopic(Constants.RIDES_TOPIC);
 
         AvroRide avroRide = new AvroRide("ride1","user1","driver1");
         rideRequestKafkaTemplate.sendDefault(avroRide);
@@ -116,7 +115,6 @@ public class EventProducer {
 
 
     public static void populate_user_ride_requests() throws InterruptedException {
-
 
         int iteration = 0;
 

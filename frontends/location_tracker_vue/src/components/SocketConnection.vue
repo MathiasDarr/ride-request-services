@@ -1,17 +1,37 @@
 <template>
   <v-container>
-      <div class="row">
+    <v-card flat>
+      
+      <v-row>
+        <v-col cols="6" sm="3">
+          <v-btn color="primary" v-on:click="connect()">
+            Connect
+          </v-btn>
+        </v-col>
+        <v-col class="d-flex" cols="6"  sm="3">
+          <v-btn color="primary" v-on:click="connect()">
+            Disconnect
+          </v-btn>
+        </v-col>
+      </v-row>
+
+    </v-card>
+
+
+
+
+      <!-- <div class="row">
         <div class="col-md-6">
           <form class="form-inline">
             <div class="form-group">
               <label for="connect">WebSocket connection:</label>
+              
               <button
                 id="connect"
                 class="btn btn-default"
                 type="submit"
                 :disabled="connected == true"
-                @click.prevent="connect"
-              >Connect</button>
+                @click.prevent="connect">Connect</button>
               <button
                 id="disconnect"
                 class="btn btn-default"
@@ -76,7 +96,7 @@
                     </div>
                   </div>
                 </div>
-              </v-card>
+              </v-card> -->
 
 
   </v-container>
