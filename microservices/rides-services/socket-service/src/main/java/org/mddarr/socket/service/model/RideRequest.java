@@ -1,36 +1,31 @@
 package org.mddarr.socket.service.model;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
-@AllArgsConstructor
-@NoArgsConstructor
 public class RideRequest {
-    private String userid;
-    private int riders;
-    private String destination;
+	private String userid;
+	private String destination;
+	private int riders;
 
-    public String getUserid() {
-        return userid;
-    }
+	public String getUserid() {
+		return userid;
+	}
 
-    public void setUserid(String userid) {
-        this.userid = userid;
-    }
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
 
-    public int getRiders() {
-        return riders;
-    }
+	public String getDestination() {
+		return destination;
+	}
 
-    public void setRiders(int riders) {
-        this.riders = riders;
-    }
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
 
-    public String getDestination() {
-        return destination;
-    }
+	public int getRiders() {
+		return riders;
+	}
 
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
+	public void setRiders(int riders) {
+		this.riders = riders;
+	}
 }

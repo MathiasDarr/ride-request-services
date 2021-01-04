@@ -99,7 +99,13 @@ export default {
       if (this.stompClient && this.stompClient.connected) {
         // const coordinates = {lat:12.1, lng:39.1}
         // JSON.stringify(coordinates)
-        this.stompClient.send("/app/rides/requests", "string1", {});
+        var request = {userid:"charles",riders:2,destination:"church" }
+        
+        // var request = {content:"hi", sender:"dfa"}
+        
+        var request = {userid:"charles",riders:2,destination:"church" }
+        var request_body = JSON.stringify(request)
+        this.stompClient.send("/app/rides/requests", request_body, {});
       }
     },
 
@@ -114,7 +120,7 @@ export default {
           this.stompClient.subscribe("/topic/rides/requests", tick => {
           console.log(tick);
 
-          // var request = {requestid:"request2", "userid" , riders:2}
+
             // this.received_ride_requests.push(JSON.parse(tick.body));
           });
         },
